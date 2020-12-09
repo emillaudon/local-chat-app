@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "973104434879",
+    "project_id": "localchatapp-12747",
+    "storage_bucket": "localchatapp-12747.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:973104434879:android:365f4c9cfc17f2d5d7400a",
+        "android_client_info": {
+          "package_name": "com.example.myapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "973104434879-vc95a2vsihnue6rdbf1mi5idbgj0c8o4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDqPeC9rU_oAPpCw8IxWRQ32L1fuPVbGyo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "973104434879-vc95a2vsihnue6rdbf1mi5idbgj0c8o4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
