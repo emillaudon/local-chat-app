@@ -46,8 +46,8 @@ class PostAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val post : Post? = listItems?.get(position)
         if (post != null) {
-            holder.textViewHeader.text = post.getHeader()
             holder.textViewText.text = post.getText()
+            holder.textViewHeader.text = post.getUserName()
         }
     }
     override fun getItemCount(): Int {
