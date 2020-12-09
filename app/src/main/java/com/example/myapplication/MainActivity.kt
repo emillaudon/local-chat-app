@@ -24,11 +24,16 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var fab : FloatingActionButton
 
+    private lateinit var userName : String
+
     private var posts: ArrayList<Post> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val sharedPref = this?.getSharedPreferences("app_cache", Context.MODE_PRIVATE)
+        userName = sharedPref.getString("user_name", "").toString()
 
         fab = findViewById(R.id.fab)
         val refresher = findViewById<SwipeRefreshLayout>(R.id.pullToRefresh)
@@ -88,7 +93,7 @@ class MainActivity : AppCompatActivity() {
     private fun newPost(text: String) {
         val db = FirebaseFirestore.getInstance()
         val post = Post(
-            "TestUser",
+            userName,
             text,
             com.google.firebase.Timestamp.now()
         )
@@ -109,12 +114,6 @@ class MainActivity : AppCompatActivity() {
             .addOnFailureListener { e ->
                 println("Error adding document")
             }
-
-
-        val sharedPref = this?.getSharedPreferences("app_cache", Context.MODE_PRIVATE)
-        val userName = sharedPref.getString("user_name", "")
-
-        println("bbb" + userName)
     }
 
     private fun goToPostCreator() {
