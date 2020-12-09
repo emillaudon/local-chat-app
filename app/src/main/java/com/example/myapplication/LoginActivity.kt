@@ -28,7 +28,7 @@ class LoginActivity : AppCompatActivity() {
 
         if (auth.currentUser != null) {
 //            User logged in redirect to main activity
-//            startActivity(Intent(this, MainActivity::class.java))
+            startActivity(Intent(this, MainActivity::class.java))
         }
 
         db = FirebaseFirestore.getInstance()
