@@ -42,19 +42,6 @@ class MainActivity : AppCompatActivity() {
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-
-
-
-
-        for (i in 0..1) {
-            val post = Post(
-                "heading" + (i + 1),
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                com.google.firebase.Timestamp.now()
-            )
-            posts.add(post)
-        }
-
         getPosts()
 
         refresher.setOnRefreshListener {
