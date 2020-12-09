@@ -1,5 +1,7 @@
 package com.example.myapplication
 
+
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -80,6 +82,7 @@ class MainActivity : AppCompatActivity() {
                     println(document.data["text"])
                     println("TAG" + "${document.id} => ${document.data}")
 
+
                     posts.add(Post(
                         document.data["text"] as String,
                         document.data["userName"] as String,
@@ -120,6 +123,11 @@ class MainActivity : AppCompatActivity() {
                 println("Error adding document")
             }
 
+
+        val sharedPref = this?.getSharedPreferences("app_cache", Context.MODE_PRIVATE)
+        val userName = sharedPref.getString("user_name", "")
+
+        println("bbb" + userName)
     }
 
     private fun goToPostCreator() {
