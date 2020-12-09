@@ -47,7 +47,8 @@ class MainActivity : AppCompatActivity() {
             posts.add(post)
         }
 
-
+        adapter = PostAdapter(posts, this)
+        recyclerView.adapter = adapter
 
 
     }

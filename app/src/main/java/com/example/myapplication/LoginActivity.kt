@@ -1,5 +1,6 @@
 package com.example.myapplication
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -24,6 +25,7 @@ class LoginActivity : AppCompatActivity() {
 
         if (auth.currentUser != null) {
 //            User logged in redirect to main activity
+            startActivity(Intent(this, MainActivity::class.java))
         }
 
         db = FirebaseFirestore.getInstance()
@@ -41,14 +43,15 @@ class LoginActivity : AppCompatActivity() {
                     val user = hashMapOf(
                             "name" to userNameTextField.text.toString()
                     )
+//                    TODO: Cache user name
 
                     db.collection("users").document(authUser!!.uid).set(user)
                         .addOnSuccessListener {
                             println("aaaaa DocumentSnapshot successfully written!")
 
-//                            go to main activity
+//                            Go to main activity
+                            startActivity(Intent(this, MainActivity::class.java))
                         }
-
 
                     Toast.makeText(baseContext, "Authentication succeeded.", Toast.LENGTH_SHORT).show()
                 }
@@ -56,8 +59,6 @@ class LoginActivity : AppCompatActivity() {
                     Toast.makeText(baseContext, "Authentication failed.", Toast.LENGTH_SHORT).show()
 
                 }
-
-
             }
 
 
