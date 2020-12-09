@@ -11,6 +11,9 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.firestore.FirebaseFirestore
+import java.sql.Timestamp
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class MainActivity : AppCompatActivity() {
@@ -39,10 +42,13 @@ class MainActivity : AppCompatActivity() {
 
 
 
+
+
         for (i in 0..1) {
             val post = Post(
                 "heading" + (i + 1),
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                com.google.firebase.Timestamp.now()
             )
             posts.add(post)
         }
@@ -76,9 +82,12 @@ class MainActivity : AppCompatActivity() {
 
                     posts.add(Post(
                         document.data["text"] as String,
-                        document.data["userName"] as String
+                        document.data["userName"] as String,
+                        document.data["date"] as com.google.firebase.Timestamp
                     ))
                 }
+                posts.sortBy { it.getDate() }
+                posts.reverse()
                 adapter.notifyDataSetChanged()
             }
             .addOnFailureListener { exception ->
@@ -90,17 +99,21 @@ class MainActivity : AppCompatActivity() {
         val db = FirebaseFirestore.getInstance()
         val post = Post(
             "TestUser",
-            text
+            text,
+            com.google.firebase.Timestamp.now()
         )
         val postHashMap = hashMapOf(
             "text" to post.getText(),
-            "userName" to post.getUserName()
+            "userName" to post.getUserName(),
+            "date" to post.getDate()
         )
         db.collection("posts")
             .add(postHashMap)
             .addOnSuccessListener { documentReference ->
                 println("DocumentSnapshot added with ID: ${documentReference.id}")
                 posts.add(post)
+                posts.sortBy { it.getDate() }
+                posts.reverse()
                 adapter.notifyDataSetChanged()
             }
             .addOnFailureListener { e ->
