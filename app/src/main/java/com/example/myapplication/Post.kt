@@ -1,16 +1,17 @@
 package com.example.myapplication
 
 class Post {
-    private var header : String
     private var text : String
+    private var userName : String
 
-    constructor(header: String, text: String){this.header = header; this.text = text}
+    constructor(userName: String, text: String){ this.text = text; this.userName = userName}
 
-    fun getHeader(): String {
-        return header
-    }
 
     fun getText(): String {
         return text
+    }
+
+    fun getUserName(): String {
+        return userName
     }
 }
