@@ -1,16 +1,19 @@
 package com.example.myapplication
 
+import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
+import org.json.JSONObject
+import java.io.*
+
 
 class LoginActivity : AppCompatActivity() {
 
@@ -25,7 +28,7 @@ class LoginActivity : AppCompatActivity() {
 
         if (auth.currentUser != null) {
 //            User logged in redirect to main activity
-            startActivity(Intent(this, MainActivity::class.java))
+//            startActivity(Intent(this, MainActivity::class.java))
         }
 
         db = FirebaseFirestore.getInstance()
@@ -43,7 +46,15 @@ class LoginActivity : AppCompatActivity() {
                     val user = hashMapOf(
                             "name" to userNameTextField.text.toString()
                     )
-//                    TODO: Cache user name
+
+//                    Cache user name
+                    val sharedPref = this?.getSharedPreferences("app_cache", Context.MODE_PRIVATE)
+                    with (sharedPref.edit()) {
+                        putString("user_name", userNameTextField.text.toString())
+                        apply()
+                    }
+
+
 
                     db.collection("users").document(authUser!!.uid).set(user)
                         .addOnSuccessListener {

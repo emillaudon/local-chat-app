@@ -1,5 +1,6 @@
 package com.example.myapplication
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
@@ -51,6 +52,12 @@ class MainActivity : AppCompatActivity() {
         recyclerView.adapter = adapter
 
 
+//        val sharedPref = this?.getSharedPreferences("test", Context.MODE_PRIVATE)
+
+        val sharedPref = this?.getSharedPreferences("app_cache", Context.MODE_PRIVATE)
+        val userName = sharedPref.getString("user_name", "")
+
+        println("bbb" + userName)
     }
 
 }
