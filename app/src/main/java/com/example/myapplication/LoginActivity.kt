@@ -66,6 +66,9 @@ class LoginActivity : AppCompatActivity() {
 
         if (auth.currentUser != null) {
 //            User logged in redirect to main activity
+            val sharedPref = this?.getSharedPreferences("app_cache", Context.MODE_PRIVATE)
+            var userName = sharedPref.getString("user_name", "").toString()
+            User(userName, 0)
             startActivity(Intent(this, MainActivity::class.java))
         }
 
