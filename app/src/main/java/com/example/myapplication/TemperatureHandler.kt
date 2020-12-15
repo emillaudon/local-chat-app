@@ -21,17 +21,23 @@ class TemperatureHandler(location: Location) {
 
         val thread = Thread(Runnable {
 
-//            TODO: Annoying json iteration has to be better way
-            val jsonObject = JSONObject(apiUrl.readText())
-            val dataItem = jsonObject["timeSeries"] as JSONArray
-            val jsonIterationObj1 = dataItem[1] as JSONObject
-            val jsonIterationObj2 = jsonIterationObj1["parameters"] as JSONArray
-            val result = jsonIterationObj2[1] as JSONObject
-            val i = result["values"] as JSONArray
+            try {
+//              TODO: Annoying json iteration has to be better way
+                val jsonObject = JSONObject(apiUrl.readText())
+                val dataItem = jsonObject["timeSeries"] as JSONArray
+                val jsonIterationObj1 = dataItem[1] as JSONObject
+                val jsonIterationObj2 = jsonIterationObj1["parameters"] as JSONArray
+                val result = jsonIterationObj2[1] as JSONObject
+                val i = result["values"] as JSONArray
 
-            val temperature = i[0] as Double
+                val temperature = i[0] as Double
 
-            callback(temperature)
+                callback(temperature)
+            }
+            catch (e:Exception) {
+//                TODO: handle error
+                println(e)
+            }
         })
         thread.start()
     }
