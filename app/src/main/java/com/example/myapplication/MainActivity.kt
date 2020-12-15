@@ -31,6 +31,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        title = User.name + " " + User.temperature + "°C"
 
         val sharedPref = this?.getSharedPreferences("app_cache", Context.MODE_PRIVATE)
         userName = sharedPref.getString("user_name", "").toString()

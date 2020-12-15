@@ -5,7 +5,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import javax.security.auth.callback.Callback
 
 class PostsHandler(userName: String) {
-    private var userName = userName;
+    private var user = User
 
     public var posts: ArrayList<Post> = arrayListOf()
 
@@ -16,8 +16,6 @@ class PostsHandler(userName: String) {
             .addOnSuccessListener { result ->
                 posts.clear()
                 for (document in result) {
-                    println(document.data["text"])
-                    println("TAG" + "${document.id} => ${document.data}")
 
                     posts.add(Post.Builder()
                         .text(document.data["text"] as String)
@@ -40,7 +38,7 @@ class PostsHandler(userName: String) {
         val db = FirebaseFirestore.getInstance()
         val post = Post.Builder()
             .text(text)
-            .userName(userName)
+            .userName(user.name)
             .date(com.google.firebase.Timestamp.now())
             .build()
 
