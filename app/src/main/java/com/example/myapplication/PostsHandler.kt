@@ -12,7 +12,8 @@ class PostsHandler(userName: String) {
     fun getPosts(callback: () -> Unit) {
         val db = FirebaseFirestore.getInstance()
         db.collection("posts")
-            .whereEqualTo("temperature", User.temperature)
+            .whereGreaterThanOrEqualTo("temperature", User.temperature - 1)
+            .whereLessThanOrEqualTo("temperature", User.temperature + 1)
             .addSnapshotListener { value, e  ->
 
                 if (e != null) {
