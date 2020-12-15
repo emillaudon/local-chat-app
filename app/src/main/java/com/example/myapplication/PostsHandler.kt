@@ -12,10 +12,17 @@ class PostsHandler(userName: String) {
     fun getPosts(callback: () -> Unit) {
         val db = FirebaseFirestore.getInstance()
         db.collection("posts")
-            .get()
-            .addOnSuccessListener { result ->
+            .whereEqualTo("temperature", User.temperature)
+            .addSnapshotListener { value, e  ->
+
+                if (e != null) {
+                    println( "Listen failed." + e)
+                    callback()
+                    return@addSnapshotListener
+                }
+
                 posts.clear()
-                for (document in result) {
+                for (document in value!!) {
 
                     posts.add(Post.Builder()
                         .text(document.data["text"] as String)
@@ -28,10 +35,6 @@ class PostsHandler(userName: String) {
                 posts.sortBy { it.getDate() }
                 posts.reverse()
                 callback()
-            }
-            .addOnFailureListener { exception ->
-                callback()
-                Log.w("TAG", "Error getting documents.", exception)
             }
     }
 
