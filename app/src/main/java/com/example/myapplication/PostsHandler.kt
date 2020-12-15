@@ -21,6 +21,7 @@ class PostsHandler(userName: String) {
                         .text(document.data["text"] as String)
                         .userName(document.data["userName"] as String)
                         .date(document.data["date"] as com.google.firebase.Timestamp)
+                        .temperature(document.data["temperature"].toString().toInt())
                         .build()
                     )
                 }
@@ -40,12 +41,14 @@ class PostsHandler(userName: String) {
             .text(text)
             .userName(user.name)
             .date(com.google.firebase.Timestamp.now())
+            .temperature(User.temperature)
             .build()
 
         val postHashMap = hashMapOf(
             "text" to post.getText(),
             "userName" to post.getUserName(),
-            "date" to post.getDate()
+            "date" to post.getDate(),
+            "temperature" to post.getTemperature()
         )
         db.collection("posts")
             .add(postHashMap)

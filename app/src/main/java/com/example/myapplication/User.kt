@@ -12,9 +12,5 @@ object User {
     lateinit var name: String
     var temperature: Int = 0
 
-    //  TODO: Add private var coordinates ?
-
-
-
 
 }

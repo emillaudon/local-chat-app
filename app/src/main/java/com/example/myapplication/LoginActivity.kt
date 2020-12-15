@@ -62,15 +62,25 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
-        getTemperature()
+        fusedLocationClient.lastLocation.addOnSuccessListener { location ->
 
-        if (auth.currentUser != null) {
+            val temperatureHandler = TemperatureHandler(location)
+
+            temperatureHandler.getTemperature { temperature ->
+                User.temperature = temperature.toInt()
+                println("2222222222222222" + temperature + "   " + User.temperature)
+
+                if (auth.currentUser != null) {
 //            User logged in redirect to main activity
-            val sharedPref = this?.getSharedPreferences("app_cache", Context.MODE_PRIVATE)
-            var userName = sharedPref.getString("user_name", "").toString()
-            User(userName, 0)
-            startActivity(Intent(this, MainActivity::class.java))
+                    val sharedPref = this?.getSharedPreferences("app_cache", Context.MODE_PRIVATE)
+                    var userName = sharedPref.getString("user_name", "").toString()
+                    User(userName, 0)
+                    startActivity(Intent(this, MainActivity::class.java))
+                }
+            }
         }
+
+
 
         db = FirebaseFirestore.getInstance()
 
@@ -127,7 +137,7 @@ class LoginActivity : AppCompatActivity() {
             val temperatureHandler = TemperatureHandler(location)
 
             temperatureHandler.getTemperature { temperature ->
-//                TODO: Save in User class or send to next activity
+                User.temperature = temperature.toInt()
             }
         }
     }

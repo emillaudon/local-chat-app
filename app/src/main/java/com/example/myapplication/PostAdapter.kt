@@ -47,7 +47,7 @@ class PostAdapter(
         val post : Post? = listItems?.get(position)
         if (post != null) {
             holder.textViewText.text = post.getText()
-            holder.textViewHeader.text = post.getUserName()
+            holder.textViewHeader.text = post.getUserName() + " " + User.temperature + "°C"
         }
     }
     override fun getItemCount(): Int {
