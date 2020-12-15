@@ -40,6 +40,8 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
+        User("undefined", 0)
+
         auth = Firebase.auth
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
@@ -68,13 +70,12 @@ class LoginActivity : AppCompatActivity() {
 
             temperatureHandler.getTemperature { temperature ->
                 User.temperature = temperature.toInt()
-                println("2222222222222222" + temperature + "   " + User.temperature)
 
                 if (auth.currentUser != null) {
 //            User logged in redirect to main activity
                     val sharedPref = this?.getSharedPreferences("app_cache", Context.MODE_PRIVATE)
                     var userName = sharedPref.getString("user_name", "").toString()
-                    User(userName, 0)
+                    User.name = userName
                     startActivity(Intent(this, MainActivity::class.java))
                 }
             }
@@ -88,7 +89,8 @@ class LoginActivity : AppCompatActivity() {
         val loginBtn = findViewById<Button>(R.id.loginBtn)
 
         loginBtn.setOnClickListener {
-
+            User.name = userNameTextField.text.toString()
+            
             auth.signInAnonymously().addOnCompleteListener(this) { task ->
                 if (task.isSuccessful && auth.currentUser?.uid != null) {
 

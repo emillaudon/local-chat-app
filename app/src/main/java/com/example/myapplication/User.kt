@@ -9,7 +9,7 @@ object User {
         return this
     }
 
-    lateinit var name: String
+    var name: String = "null"
     var temperature: Int = 0
 
 
