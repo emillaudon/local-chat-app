@@ -25,6 +25,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import org.json.JSONObject
 import java.io.*
+import kotlin.properties.Delegates
 
 
 class LoginActivity : AppCompatActivity() {
@@ -32,26 +33,14 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
 
-//    private var locationManager : LocationManager? = null
-
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-
         auth = Firebase.auth
-
-        if (auth.currentUser != null) {
-//            User logged in redirect to main activity
-            startActivity(Intent(this, MainActivity::class.java))
-        }
-
-        db = FirebaseFirestore.getInstance()
-
-        val userNameTextField = findViewById<EditText>(R.id.userNameTextField)
-        val loginBtn = findViewById<Button>(R.id.loginBtn)
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
@@ -73,8 +62,17 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
-        getLocation()
+        getTemperature()
 
+        if (auth.currentUser != null) {
+//            User logged in redirect to main activity
+            startActivity(Intent(this, MainActivity::class.java))
+        }
+
+        db = FirebaseFirestore.getInstance()
+
+        val userNameTextField = findViewById<EditText>(R.id.userNameTextField)
+        val loginBtn = findViewById<Button>(R.id.loginBtn)
 
         loginBtn.setOnClickListener {
 
@@ -93,8 +91,7 @@ class LoginActivity : AppCompatActivity() {
                         apply()
                     }
 
-
-
+//                    Save user to db
                     db.collection("users").document(authUser!!.uid).set(user)
                         .addOnSuccessListener {
                             println("aaaaa DocumentSnapshot successfully written!")
@@ -107,30 +104,29 @@ class LoginActivity : AppCompatActivity() {
                 }
                 else {
                     Toast.makeText(baseContext, "Authentication failed.", Toast.LENGTH_SHORT).show()
-
                 }
             }
         }
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        if (requestCode == 1) getLocation()
+        if (requestCode == 1) getTemperature()
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
     @SuppressLint("MissingPermission")
-    fun getLocation() {
+    fun getTemperature() {
 
         fusedLocationClient.lastLocation.addOnSuccessListener { location ->
 
-            println("zzz" + location)
-            var temperatureHandler = TemperatureHandler(location)
+            val temperatureHandler = TemperatureHandler(location)
 
-            temperatureHandler.getTemperature()
+            temperatureHandler.getTemperature { temperature ->
+//                TODO: Save in User class or send to next activity
+            }
         }
-
-
     }
 
 

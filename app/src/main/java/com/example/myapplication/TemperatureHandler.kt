@@ -5,14 +5,10 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import org.json.JSONArray
 import org.json.JSONObject
-import java.net.HttpURLConnection
 import java.net.URL
-import javax.net.ssl.HttpsURLConnection
-import kotlin.math.roundToInt
-import kotlin.reflect.typeOf
 
 @RequiresApi(Build.VERSION_CODES.N)
-class TemperatureHandler(val location: Location) {
+class TemperatureHandler(location: Location) {
 
     private val long = location.longitude.toString().take(9)
     private val lat = location.latitude.toString().take(9)
@@ -21,33 +17,23 @@ class TemperatureHandler(val location: Location) {
             long + "/lat/" + lat + "/data.json")
 
 
-    fun getTemperature() {
-
-//        with(apiUrl.openConnection() as HttpURLConnection) {
-//
-//            inputStream.bufferedReader().use {
-//                it.lines().forEach { line ->
-//                    println("zz" + line)
-//                }
-//            }
-//        }
-
-        println("zz" + location.latitude)
+    fun getTemperature(callback: (Double) -> Unit) {
 
         val thread = Thread(Runnable {
 
+//            TODO: Annoying json iteration has to be better way
             val jsonObject = JSONObject(apiUrl.readText())
-
             val dataItem = jsonObject["timeSeries"] as JSONArray
+            val jsonIterationObj1 = dataItem[1] as JSONObject
+            val jsonIterationObj2 = jsonIterationObj1["parameters"] as JSONArray
+            val result = jsonIterationObj2[1] as JSONObject
+            val i = result["values"] as JSONArray
 
+            val temperature = i[0] as Double
 
-
-            println("zz" + dataItem[1])
-
-
+            callback(temperature)
         })
         thread.start()
-
     }
 
 
