@@ -90,7 +90,7 @@ class LoginActivity : AppCompatActivity() {
 
         loginBtn.setOnClickListener {
             User.name = userNameTextField.text.toString()
-            
+
             auth.signInAnonymously().addOnCompleteListener(this) { task ->
                 if (task.isSuccessful && auth.currentUser?.uid != null) {
 
