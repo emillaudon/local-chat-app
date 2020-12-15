@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var userName : String
 
-    private var posts: ArrayList<Post> = arrayListOf()
+    private lateinit var postsHandler : PostsHandler
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,24 +34,25 @@ class MainActivity : AppCompatActivity() {
 
         val sharedPref = this?.getSharedPreferences("app_cache", Context.MODE_PRIVATE)
         userName = sharedPref.getString("user_name", "").toString()
+        postsHandler = PostsHandler(userName)
+        postsHandler.getPosts() {
+            adapter.notifyDataSetChanged()
+        }
 
         fab = findViewById(R.id.fab)
-        val refresher = findViewById<SwipeRefreshLayout>(R.id.pullToRefresh)
-
-
-        val db = FirebaseFirestore.getInstance()
-
         recyclerView = findViewById(R.id.recyclerView)
-        adapter = PostAdapter(posts, this)
+
+        adapter = PostAdapter(postsHandler.posts, this)
         recyclerView.adapter = adapter
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        getPosts()
-
+        val refresher = findViewById<SwipeRefreshLayout>(R.id.pullToRefresh)
         refresher.setOnRefreshListener {
-            getPosts()
-            refresher.isRefreshing = false
+            postsHandler.getPosts() {
+                refresher.isRefreshing = false
+                adapter.notifyDataSetChanged()
+            }
         }
 
         fab.setOnClickListener {
@@ -62,58 +63,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun fabClicked() {
         goToPostCreator()
-    }
-
-    private fun getPosts() {
-        val db = FirebaseFirestore.getInstance()
-        db.collection("posts")
-            .get()
-            .addOnSuccessListener { result ->
-                posts.clear()
-                for (document in result) {
-                    println(document.data["text"])
-                    println("TAG" + "${document.id} => ${document.data}")
-
-
-                    posts.add(Post(
-                        document.data["text"] as String,
-                        document.data["userName"] as String,
-                        document.data["date"] as com.google.firebase.Timestamp
-                    ))
-                }
-                posts.sortBy { it.getDate() }
-                posts.reverse()
-                adapter.notifyDataSetChanged()
-            }
-            .addOnFailureListener { exception ->
-                Log.w("TAG", "Error getting documents.", exception)
-            }
-    }
-
-    private fun newPost(text: String) {
-        val db = FirebaseFirestore.getInstance()
-        val post = Post(
-            userName,
-            text,
-            com.google.firebase.Timestamp.now()
-        )
-        val postHashMap = hashMapOf(
-            "text" to post.getText(),
-            "userName" to post.getUserName(),
-            "date" to post.getDate()
-        )
-        db.collection("posts")
-            .add(postHashMap)
-            .addOnSuccessListener { documentReference ->
-                println("DocumentSnapshot added with ID: ${documentReference.id}")
-                posts.add(post)
-                posts.sortBy { it.getDate() }
-                posts.reverse()
-                adapter.notifyDataSetChanged()
-            }
-            .addOnFailureListener { e ->
-                println("Error adding document")
-            }
     }
 
     private fun goToPostCreator() {
@@ -127,7 +76,9 @@ class MainActivity : AppCompatActivity() {
         if(data != null && requestCode == 1) {
             if (resultCode == RESULT_OK) {
                 val newPostText = data.getStringExtra("result")
-                newPost(newPostText)
+                postsHandler.newPost(newPostText) {
+                    adapter.notifyDataSetChanged()
+                }
             }
         }
     }
