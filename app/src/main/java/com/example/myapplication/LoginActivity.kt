@@ -3,29 +3,28 @@ package com.example.myapplication
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Context.LOCATION_SERVICE
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.location.Location
-import android.location.LocationManager
+import android.opengl.Visibility
 import android.os.Build
 import android.os.Bundle
+import android.view.View
+import android.view.animation.AlphaAnimation
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
-import org.json.JSONObject
-import java.io.*
-import kotlin.properties.Delegates
+import kotlinx.android.synthetic.main.activity_login.*
 
 
 class LoginActivity : AppCompatActivity() {
@@ -81,12 +80,13 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
-
-
         db = FirebaseFirestore.getInstance()
 
         val userNameTextField = findViewById<EditText>(R.id.userNameTextField)
         val loginBtn = findViewById<Button>(R.id.loginBtn)
+
+        if (auth.currentUser == null)
+            animateEditTextAndButton()
 
         loginBtn.setOnClickListener {
             User.name = userNameTextField.text.toString()
@@ -122,6 +122,16 @@ class LoginActivity : AppCompatActivity() {
                 }
             }
         }
+
+    }
+
+    private fun animateEditTextAndButton() {
+        userNameTextField.visibility = View.VISIBLE
+        loginBtn.visibility = View.VISIBLE
+        val fadeIn = AlphaAnimation(0.0f, 1.0f)
+        fadeIn.duration = 1500
+        userNameTextField.startAnimation(fadeIn)
+        loginBtn.startAnimation(fadeIn)
 
     }
 
