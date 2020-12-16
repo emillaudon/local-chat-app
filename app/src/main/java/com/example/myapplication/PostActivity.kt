@@ -2,12 +2,12 @@ package com.example.myapplication
 
 import android.app.Activity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import kotlinx.android.synthetic.main.activity_post.*
+import androidx.appcompat.app.AppCompatActivity
 
 class PostActivity : AppCompatActivity() {
     private lateinit var postEditText : EditText
@@ -19,6 +19,8 @@ class PostActivity : AppCompatActivity() {
 
         postEditText = findViewById(R.id.editTextPost)
 
+        focusEditText()
+
         val postButton = findViewById<Button>(R.id.postbutton)
 
         postButton.setOnClickListener {
@@ -29,6 +31,16 @@ class PostActivity : AppCompatActivity() {
             }
 
         }
+    }
+
+    private fun focusEditText() {
+        postEditText.requestFocus()
+        val imm =
+            getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.toggleSoftInput(
+            InputMethodManager.SHOW_FORCED,
+            InputMethodManager.HIDE_IMPLICIT_ONLY
+        )
     }
 
     private fun finishedPost() {

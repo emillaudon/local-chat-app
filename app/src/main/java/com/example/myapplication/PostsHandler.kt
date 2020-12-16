@@ -58,7 +58,7 @@ class PostsHandler(userName: String) {
             .add(postHashMap)
             .addOnSuccessListener { documentReference ->
                 println("DocumentSnapshot added with ID: ${documentReference.id}")
-                
+
                 callback()
             }
             .addOnFailureListener { e ->
