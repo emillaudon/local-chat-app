@@ -40,6 +40,7 @@ class LoginActivity : AppCompatActivity() {
 //            User logged in redirect to main activity
                 val sharedPref = this?.getSharedPreferences("app_cache", Context.MODE_PRIVATE)
                 val userName = sharedPref.getString("user_name", "").toString()
+                User.uid = auth.currentUser!!.uid
                 User.name = userName
                 startActivity(Intent(this, MainActivity::class.java))
             }
@@ -59,11 +60,6 @@ class LoginActivity : AppCompatActivity() {
             auth.signInAnonymously().addOnCompleteListener(this) { task ->
                 if (task.isSuccessful && auth.currentUser?.uid != null) {
 
-                    val authUser        = auth.currentUser
-                    val user    = hashMapOf(
-                            "name" to userNameTextField.text.toString()
-                    )
-
 //                    Cache user name
                     val sharedPref = this?.getSharedPreferences("app_cache", Context.MODE_PRIVATE)
                     with (sharedPref.edit()) {
@@ -71,16 +67,10 @@ class LoginActivity : AppCompatActivity() {
                         apply()
                     }
 
-//                    Save user to db
-                    db.collection("users").document(authUser!!.uid).set(user)
-                        .addOnSuccessListener {
-                            println("aaaaa DocumentSnapshot successfully written!")
-
-//                            Go to main activity
-                            startActivity(Intent(this, MainActivity::class.java))
-                        }
-
-                    Toast.makeText(baseContext, "Authentication succeeded.", Toast.LENGTH_SHORT).show()
+                    User.uid = auth.currentUser!!.uid
+                    User.saveToDb {
+                        startActivity(Intent(this, MainActivity::class.java))
+                    }
                 }
                 else {
                     Toast.makeText(baseContext, "Authentication failed.", Toast.LENGTH_SHORT).show()
