@@ -32,8 +32,6 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
 
-    private lateinit var fusedLocationClient: FusedLocationProviderClient
-
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,42 +41,20 @@ class LoginActivity : AppCompatActivity() {
 
         auth = Firebase.auth
 
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        val temperatureHandler = TemperatureHandler(this)
 
-//        Ask for location permission
-        if (ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED ) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this@LoginActivity,
-                    Manifest.permission.ACCESS_FINE_LOCATION)) {
-                ActivityCompat.requestPermissions(this@LoginActivity,
-                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1)
-            } else {
-                ActivityCompat.requestPermissions(this@LoginActivity,
-                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1)
-            }
-        }
+        temperatureHandler.getTemperature { temperature ->
+            User.temperature = temperature.toInt()
 
-        fusedLocationClient.lastLocation.addOnSuccessListener { location ->
-
-            val temperatureHandler = TemperatureHandler(location)
-
-            temperatureHandler.getTemperature { temperature ->
-                User.temperature = temperature.toInt()
-
-                if (auth.currentUser != null) {
+            if (auth.currentUser != null) {
 //            User logged in redirect to main activity
-                    val sharedPref = this?.getSharedPreferences("app_cache", Context.MODE_PRIVATE)
-                    var userName = sharedPref.getString("user_name", "").toString()
-                    User.name = userName
-                    startActivity(Intent(this, MainActivity::class.java))
-                }
+                val sharedPref = this?.getSharedPreferences("app_cache", Context.MODE_PRIVATE)
+                val userName = sharedPref.getString("user_name", "").toString()
+                User.name = userName
+                startActivity(Intent(this, MainActivity::class.java))
             }
         }
+
 
         db = FirebaseFirestore.getInstance()
 
@@ -144,14 +120,12 @@ class LoginActivity : AppCompatActivity() {
     @SuppressLint("MissingPermission")
     fun getTemperature() {
 
-        fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+        val temperatureHandler = TemperatureHandler(this)
 
-            val temperatureHandler = TemperatureHandler(location)
-
-            temperatureHandler.getTemperature { temperature ->
-                User.temperature = temperature.toInt()
-            }
+        temperatureHandler.getTemperature { temperature ->
+            User.temperature = temperature.toInt()
         }
+
     }
 
 
