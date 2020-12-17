@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/itemRelativeLayout"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
@@ -15,11 +16,30 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <TextView
-                android:id="@+id/textone"
+            <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                >
+                <TextView
+                android:id="@+id/textone"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Text One" />
+                android:text="Text One"
+                android:textStyle="bold"
+                android:textSize="16dp"
+                />
+
+                <TextView
+                    android:id="@+id/degrees"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Text One"
+                    android:textAlignment="textEnd"
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/texttwo"

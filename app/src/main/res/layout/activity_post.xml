@@ -9,16 +9,18 @@
 
     <EditText
         android:id="@+id/editTextPost"
-        android:layout_width="379dp"
-        android:layout_height="65dp"
-        android:layout_marginBottom="124dp"
+        android:layout_width="307dp"
+        android:layout_height="62dp"
+        android:layout_marginBottom="108dp"
+        android:backgroundTint="#D3D3D3"
         android:ems="10"
         android:hint="Message"
-        android:textColorHint="#FFF000"
+        android:inputType="textMultiLine|textCapSentences"
         android:textColor="#FFFFFF"
-        android:inputType="textMultiLine"
+        android:textColorHint="#D3D3D3"
         app:layout_constraintBottom_toTopOf="@+id/postbutton"
-        tools:layout_editor_absoluteX="16dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/postbutton"
