@@ -1,6 +1,7 @@
 package com.example.myapplication
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
@@ -11,6 +12,8 @@ import androidx.appcompat.app.AppCompatActivity
 
 class PostActivity : AppCompatActivity() {
     private lateinit var postEditText : EditText
+
+    private lateinit var imm : InputMethodManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,6 +29,7 @@ class PostActivity : AppCompatActivity() {
         postButton.setOnClickListener {
             if(postEditText.text != null && postEditText.text.length > 1) {
                 finishedPost()
+                imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
             } else {
                 Toast.makeText(baseContext, "You have to type something.", Toast.LENGTH_SHORT).show()
             }
@@ -34,9 +38,9 @@ class PostActivity : AppCompatActivity() {
     }
 
     private fun focusEditText() {
-        postEditText.requestFocus()
-        val imm =
+        imm =
             getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        postEditText.requestFocus()
         imm.toggleSoftInput(
             InputMethodManager.SHOW_FORCED,
             InputMethodManager.HIDE_IMPLICIT_ONLY
