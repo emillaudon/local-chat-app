@@ -1,25 +1,15 @@
 package com.example.myapplication
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.opengl.Visibility
-import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.animation.AlphaAnimation
 import android.widget.Button
 import android.widget.EditText
-import android.widget.ProgressBar
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.view.isVisible
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -31,7 +21,9 @@ class LoginActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
-    
+
+    private val temperatureHandler = TemperatureHandler(this)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
@@ -39,8 +31,7 @@ class LoginActivity : AppCompatActivity() {
         User("undefined", 0)
 
         auth = Firebase.auth
-
-        val temperatureHandler = TemperatureHandler(this)
+        
 
         temperatureHandler.getTemperature { temperature ->
             User.temperature = temperature.toInt()
@@ -53,7 +44,6 @@ class LoginActivity : AppCompatActivity() {
                 startActivity(Intent(this, MainActivity::class.java))
             }
         }
-
 
         db = FirebaseFirestore.getInstance()
 
@@ -114,15 +104,11 @@ class LoginActivity : AppCompatActivity() {
         if (requestCode == 1) getTemperature()
     }
 
-    @SuppressLint("MissingPermission")
-    fun getTemperature() {
-
-        val temperatureHandler = TemperatureHandler(this)
+    private fun getTemperature() {
 
         temperatureHandler.getTemperature { temperature ->
             User.temperature = temperature.toInt()
         }
-
     }
 
 

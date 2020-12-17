@@ -48,9 +48,10 @@ class TemperatureHandler(private val activity: Activity) {
             }
             else {
                 val thread = Thread(Runnable {
+
                     val locationRequest = LocationRequest.create()
                     locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-                    locationRequest.interval = 1000
+                    locationRequest.interval = (20 * 1000)
                     val locationCallback = object : LocationCallback() {
                         override fun onLocationResult(locationResult: LocationResult) {
                             for (location in locationResult.locations) {
@@ -61,6 +62,7 @@ class TemperatureHandler(private val activity: Activity) {
                         }
                     }
                     fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper())
+                    fusedLocationClient.removeLocationUpdates(locationCallback)
                 })
                 thread.start()
             }
