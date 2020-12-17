@@ -49,14 +49,6 @@ class MainActivity : AppCompatActivity() {
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        val refresher = findViewById<SwipeRefreshLayout>(R.id.pullToRefresh)
-        refresher.setOnRefreshListener {
-            postsHandler.getPosts() {
-                refresher.isRefreshing = false
-                adapter.notifyDataSetChanged()
-            }
-        }
-
         fab.setOnClickListener {
             fabClicked()
         }
