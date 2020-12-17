@@ -1,21 +1,18 @@
 package com.example.myapplication
 
-import android.content.Intent
-import androidx.core.content.ContextCompat.startActivity
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import java.util.Timer
-import kotlin.concurrent.*
+import com.example.myapplication.activities.LoginActivity
+import com.example.myapplication.activities.MainActivity
 
 import org.junit.Test
 import org.junit.runner.RunWith
 
 import org.junit.Assert.*
-import java.util.logging.Handler
 
 /**
  * Instrumented test, which will execute on an Android device.

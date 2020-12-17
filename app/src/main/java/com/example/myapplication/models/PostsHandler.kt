@@ -1,8 +1,6 @@
-package com.example.myapplication
+package com.example.myapplication.models
 
-import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
-import javax.security.auth.callback.Callback
 
 class PostsHandler(userName: String) {
     private var user = User
@@ -25,7 +23,8 @@ class PostsHandler(userName: String) {
                 posts.clear()
                 for (document in value!!) {
 
-                    posts.add(Post.Builder()
+                    posts.add(
+                        Post.Builder()
                         .text(document.data["text"] as String)
                         .userName(document.data["userName"] as String)
                         .date(document.data["date"] as com.google.firebase.Timestamp)

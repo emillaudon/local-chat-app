@@ -1,9 +1,8 @@
-package com.example.myapplication
+package com.example.myapplication.models
 
 import com.google.firebase.Timestamp
-import java.util.*
 
-class Post private constructor(builder: Post.Builder) {
+class Post private constructor(builder: Builder) {
     private var text : String?
     private var userName : String?
     private var date : Timestamp?

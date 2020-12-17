@@ -1,21 +1,17 @@
-package com.example.myapplication
+package com.example.myapplication.activities
 
 
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.example.myapplication.*
+import com.example.myapplication.adapters.PostAdapter
+import com.example.myapplication.models.PostsHandler
+import com.example.myapplication.models.User
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.firebase.firestore.FirebaseFirestore
-import java.sql.Timestamp
-import java.util.*
-import kotlin.collections.ArrayList
 
 
 class MainActivity : AppCompatActivity() {
@@ -44,7 +40,10 @@ class MainActivity : AppCompatActivity() {
         fab = findViewById(R.id.fab)
         recyclerView = findViewById(R.id.recyclerView)
 
-        adapter = PostAdapter(postsHandler.posts, this)
+        adapter = PostAdapter(
+            postsHandler.posts,
+            this
+        )
         recyclerView.adapter = adapter
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = LinearLayoutManager(this)

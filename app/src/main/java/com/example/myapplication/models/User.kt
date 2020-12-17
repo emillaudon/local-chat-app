@@ -1,10 +1,10 @@
-package com.example.myapplication
+package com.example.myapplication.models
 
 object User {
 
     operator fun invoke(name: String, temperature: Int): User {
-        this.name = name
-        this.temperature = temperature
+        User.name = name
+        User.temperature = temperature
 
         return this
     }
