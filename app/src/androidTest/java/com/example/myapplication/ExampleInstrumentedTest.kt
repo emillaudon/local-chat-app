@@ -1,12 +1,21 @@
 package com.example.myapplication
 
+import android.content.Intent
+import androidx.core.content.ContextCompat.startActivity
+import androidx.test.core.app.ActivityScenario
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions.*
+import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import java.util.Timer
+import kotlin.concurrent.*
 
 import org.junit.Test
 import org.junit.runner.RunWith
 
 import org.junit.Assert.*
+import java.util.logging.Handler
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -21,4 +30,64 @@ class ExampleInstrumentedTest {
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
         assertEquals("com.example.myapplication", appContext.packageName)
     }
+
+    @Test
+    fun appLaunchesSuccessfully() {
+        ActivityScenario.launch(MainActivity::class.java)
+    }
+
+    @Test
+    fun onLaunchCheckUserNameFieldDisplayed() {
+        ActivityScenario.launch(LoginActivity::class.java)
+
+        onView(withId(R.id.userNameTextField))
+    }
+
+    @Test
+    fun onLaunchCheckRecyclerViewDisplayed() {
+        ActivityScenario.launch(MainActivity::class.java)
+
+        onView(withId(R.id.recyclerView))
+    }
+
+    @Test
+    fun onClickFabChangeActivity() {
+        ActivityScenario.launch(MainActivity::class.java)
+
+        onView(withId(R.id.fab))
+            .perform(click())
+    }
+
+    @Test
+    fun onLaunchLoginAndCreatePost() {
+        ActivityScenario.launch(LoginActivity::class.java)
+
+        onView(withId(R.id.userNameTextField))
+            .perform(clearText())
+            .perform(typeText("TestUser"))
+
+        onView(withId(R.id.loginBtn))
+            .perform(click())
+
+
+        ActivityScenario.launch(MainActivity::class.java)
+
+
+        onView(withId(R.id.fab))
+            .perform(click())
+
+        onView(withId(R.id.editTextPost))
+            .perform(clearText())
+            .perform(typeText("Test post"))
+
+        onView(withId(R.id.postbutton))
+            .perform(click())
+
+
+
+
+    }
+
+
+
 }
