@@ -33,8 +33,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var db: FirebaseFirestore
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
-
-    @RequiresApi(Build.VERSION_CODES.N)
+    
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
@@ -135,12 +134,10 @@ class LoginActivity : AppCompatActivity() {
 
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         if (requestCode == 1) getTemperature()
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
     @SuppressLint("MissingPermission")
     fun getTemperature() {
 
