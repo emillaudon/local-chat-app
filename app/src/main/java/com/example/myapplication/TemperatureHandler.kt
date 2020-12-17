@@ -18,6 +18,7 @@ import java.net.URL
 class TemperatureHandler(private val activity: Activity) {
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var locationCallback: LocationCallback
 
     private fun getLocation(callback: (Location) -> Unit) {
 
@@ -52,7 +53,7 @@ class TemperatureHandler(private val activity: Activity) {
                     val locationRequest = LocationRequest.create()
                     locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
                     locationRequest.interval = (20 * 1000)
-                    val locationCallback = object : LocationCallback() {
+                    locationCallback = object : LocationCallback() {
                         override fun onLocationResult(locationResult: LocationResult) {
                             for (location in locationResult.locations) {
                                 if (location != null) {
@@ -62,7 +63,6 @@ class TemperatureHandler(private val activity: Activity) {
                         }
                     }
                     fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper())
-                    fusedLocationClient.removeLocationUpdates(locationCallback)
                 })
                 thread.start()
             }
@@ -72,6 +72,10 @@ class TemperatureHandler(private val activity: Activity) {
     fun getTemperature(callback: (Double) -> Unit) {
 
         getLocation { location ->
+
+            if (this::locationCallback.isInitialized) {
+                fusedLocationClient.removeLocationUpdates(locationCallback)
+            }
 
             println("location:" + location)
 
