@@ -1,16 +1,19 @@
 package com.example.myapplication
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import kotlinx.android.synthetic.main.activity_post.*
+import androidx.appcompat.app.AppCompatActivity
 
 class PostActivity : AppCompatActivity() {
     private lateinit var postEditText : EditText
+
+    private lateinit var imm : InputMethodManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,16 +22,29 @@ class PostActivity : AppCompatActivity() {
 
         postEditText = findViewById(R.id.editTextPost)
 
+        focusEditText()
+
         val postButton = findViewById<Button>(R.id.postbutton)
 
         postButton.setOnClickListener {
             if(postEditText.text != null && postEditText.text.length > 1) {
                 finishedPost()
+                imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
             } else {
                 Toast.makeText(baseContext, "You have to type something.", Toast.LENGTH_SHORT).show()
             }
 
         }
+    }
+
+    private fun focusEditText() {
+        imm =
+            getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        postEditText.requestFocus()
+        imm.toggleSoftInput(
+            InputMethodManager.SHOW_FORCED,
+            InputMethodManager.HIDE_IMPLICIT_ONLY
+        )
     }
 
     private fun finishedPost() {

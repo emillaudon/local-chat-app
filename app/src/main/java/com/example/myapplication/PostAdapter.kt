@@ -5,6 +5,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
@@ -30,10 +31,14 @@ class PostAdapter(
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var textViewHeader: TextView
         var textViewText: TextView
+        var degreesViewText: TextView
+        var relativeLayout: RelativeLayout
 
         init {
             textViewHeader = itemView.findViewById(R.id.textone)
             textViewText = itemView.findViewById(R.id.texttwo)
+            degreesViewText = itemView.findViewById(R.id.degrees)
+            relativeLayout = itemView.findViewById(R.id.itemRelativeLayout)
         }
     }
 
@@ -48,6 +53,15 @@ class PostAdapter(
         if (post != null) {
             holder.textViewText.text = post.getText()
             holder.textViewHeader.text = post.getUserName()
+            holder.degreesViewText.text = post.getTemperature().toString() + "°C"
+
+            if (position % 2 == 0) {
+                holder.relativeLayout.setBackgroundResource(R.color.colorAccent)
+            } else if (position % 3 == 0) {
+                holder.relativeLayout.setBackgroundResource(R.color.postColorTwo)
+            } else {
+                holder.relativeLayout.setBackgroundResource(R.color.postColorOne)
+            }
         }
     }
     override fun getItemCount(): Int {
