@@ -36,8 +36,13 @@ class LoginActivity : AppCompatActivity() {
 
         auth = Firebase.auth
 
-        println("zz" + NetworkHandler.getType(this))
 
+        if (!NetworkHandler.isOnline(this)) {
+            Toast.makeText(baseContext, "No network.", Toast.LENGTH_SHORT).show()
+
+
+            return
+        }
 
         temperatureHandler.getTemperature { temperature ->
             User.temperature = temperature
