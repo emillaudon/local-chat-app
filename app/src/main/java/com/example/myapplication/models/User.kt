@@ -43,7 +43,8 @@ object User {
         val sharedPref = activity.getSharedPreferences("app_cache", Context.MODE_PRIVATE)
         with (sharedPref.edit()) {
             putString("user_name", name)
-//           Add more strings to cache here if needed
+            putInt("temperature", temperature)
+//           Add more values to cache here if needed
             apply()
         }
 
@@ -53,6 +54,7 @@ object User {
 
         val sharedPref = activity.getSharedPreferences("app_cache", Context.MODE_PRIVATE)
         name = sharedPref.getString("user_name", "").toString()
+        temperature = sharedPref.getInt("temperature", 0)
     }
 
 }

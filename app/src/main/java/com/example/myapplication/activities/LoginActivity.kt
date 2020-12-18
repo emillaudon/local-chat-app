@@ -40,18 +40,20 @@ class LoginActivity : AppCompatActivity() {
         if (!NetworkHandler.isOnline(this)) {
             Toast.makeText(baseContext, "No network.", Toast.LENGTH_SHORT).show()
 
+            User.getFromCache(this)
 
-            return
+//            TODO: show only cached post in MainActivity
+            startActivity(Intent(this, MainActivity::class.java))
         }
 
         temperatureHandler.getTemperature { temperature ->
-            User.temperature = temperature
-
             if (auth.currentUser != null) {
-//               User logged in redirect to main activity
+//                Get cached user object update user temp
                 User.uid = auth.currentUser!!.uid
                 User.getFromCache(this)
+                User.temperature = temperature
 
+//               User logged in redirect to main activity
                 startActivity(Intent(this, MainActivity::class.java))
             }
         }
