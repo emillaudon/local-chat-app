@@ -29,8 +29,6 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var fab : FloatingActionButton
 
-    private lateinit var userName : String
-
     private lateinit var postsHandler : PostsHandler
     
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,9 +37,7 @@ class MainActivity : AppCompatActivity() {
 
         title = User.name + "     " + User.temperature + "°C"
 
-        val sharedPref = this?.getSharedPreferences("app_cache", Context.MODE_PRIVATE)
-        userName = sharedPref.getString("user_name", "").toString()
-        postsHandler = PostsHandler(userName)
+        postsHandler = PostsHandler()
         postsHandler.getPosts() {
             adapter.notifyDataSetChanged()
         }

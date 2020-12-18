@@ -2,7 +2,7 @@ package com.example.myapplication.models
 
 import com.google.firebase.firestore.FirebaseFirestore
 
-class PostsHandler(userName: String) {
+class PostsHandler() {
     private var user = User
 
     public var posts: ArrayList<Post> = arrayListOf()
