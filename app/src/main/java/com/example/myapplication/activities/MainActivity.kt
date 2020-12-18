@@ -5,13 +5,22 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.*
 import com.example.myapplication.adapters.PostAdapter
+import com.example.myapplication.data.DBPost
+import com.example.myapplication.data.PostDatabase
+import com.example.myapplication.data.PostRepository
+import com.example.myapplication.models.PostCacheHandler
 import com.example.myapplication.models.PostsHandler
 import com.example.myapplication.models.User
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.Timestamp
+import kotlinx.coroutines.*
+import kotlin.coroutines.CoroutineContext
 
 
 class MainActivity : AppCompatActivity() {
@@ -23,7 +32,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var userName : String
 
     private lateinit var postsHandler : PostsHandler
-
+    
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)

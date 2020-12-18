@@ -1,5 +1,6 @@
 package com.example.myapplication
 
+import android.app.Instrumentation
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.*
@@ -50,6 +51,15 @@ class ExampleInstrumentedTest {
     @Test
     fun onClickFabChangeActivity() {
         ActivityScenario.launch(MainActivity::class.java)
+
+        onView(withId(R.id.fab))
+            .perform(click())
+    }
+
+    @Test
+    fun postAppearsAfterCreation() {
+        ActivityScenario.launch(MainActivity::class.java)
+        MainActivity.postsHandler.posts
 
         onView(withId(R.id.fab))
             .perform(click())
