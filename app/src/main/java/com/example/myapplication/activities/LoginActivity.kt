@@ -34,17 +34,15 @@ class LoginActivity : AppCompatActivity() {
         User("undefined", 0)
 
         auth = Firebase.auth
-        
 
         temperatureHandler.getTemperature { temperature ->
-            User.temperature = temperature.toInt()
+            User.temperature = temperature
 
             if (auth.currentUser != null) {
-//            User logged in redirect to main activity
-                val sharedPref = this?.getSharedPreferences("app_cache", Context.MODE_PRIVATE)
-                val userName = sharedPref.getString("user_name", "").toString()
+//               User logged in redirect to main activity
                 User.uid = auth.currentUser!!.uid
-                User.name = userName
+                User.getFromCache(this)
+
                 startActivity(Intent(this, MainActivity::class.java))
             }
         }
@@ -58,19 +56,13 @@ class LoginActivity : AppCompatActivity() {
             animateEditTextAndButton()
 
         loginBtn.setOnClickListener {
-            User.name = userNameTextField.text.toString()
-
             auth.signInAnonymously().addOnCompleteListener(this) { task ->
                 if (task.isSuccessful && auth.currentUser?.uid != null) {
 
-//                    Cache user name
-                    val sharedPref = this?.getSharedPreferences("app_cache", Context.MODE_PRIVATE)
-                    with (sharedPref.edit()) {
-                        putString("user_name", userNameTextField.text.toString())
-                        apply()
-                    }
-
+                    User.name = userNameTextField.text.toString()
                     User.uid = auth.currentUser!!.uid
+
+                    User.cache(this)
                     User.saveToDb {
                         startActivity(Intent(this, MainActivity::class.java))
                     }
@@ -94,13 +86,13 @@ class LoginActivity : AppCompatActivity() {
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        if (requestCode == 1) getTemperature()
+        if (requestCode == 1) setUserTemperature()
     }
 
-    private fun getTemperature() {
+    private fun setUserTemperature() {
 
         temperatureHandler.getTemperature { temperature ->
-            User.temperature = temperature.toInt()
+            User.temperature = temperature
         }
     }
 

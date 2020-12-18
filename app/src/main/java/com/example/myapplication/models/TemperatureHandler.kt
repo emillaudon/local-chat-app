@@ -69,7 +69,7 @@ class TemperatureHandler(private val activity: Activity) {
         }
     }
 
-    fun getTemperature(callback: (Double) -> Unit) {
+    fun getTemperature(callback: (Int) -> Unit) {
 
         getLocation { location ->
 
@@ -97,7 +97,7 @@ class TemperatureHandler(private val activity: Activity) {
 
                     val temperature = i[0] as Double
 
-                    callback(temperature)
+                    callback(temperature.toInt())
                 }
                 catch (e:Exception) {
 //                TODO: handle error

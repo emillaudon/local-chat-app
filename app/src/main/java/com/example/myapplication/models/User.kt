@@ -1,6 +1,7 @@
 package com.example.myapplication.models
 
-import android.content.Intent
+import android.app.Activity
+import android.content.Context
 import com.google.firebase.firestore.FirebaseFirestore
 
 object User {
@@ -34,7 +35,24 @@ object User {
 
                 callback()
             }
+    }
 
+    fun cache(activity: Activity) {
+
+//       Cache user name
+        val sharedPref = activity.getSharedPreferences("app_cache", Context.MODE_PRIVATE)
+        with (sharedPref.edit()) {
+            putString("user_name", name)
+//           Add more strings to cache here if needed
+            apply()
+        }
+
+    }
+
+    fun getFromCache(activity: Activity) {
+
+        val sharedPref = activity.getSharedPreferences("app_cache", Context.MODE_PRIVATE)
+        name = sharedPref.getString("user_name", "").toString()
     }
 
 }
