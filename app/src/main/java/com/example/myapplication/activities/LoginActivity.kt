@@ -10,6 +10,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.myapplication.R
+import com.example.myapplication.models.NetworkHandler
 import com.example.myapplication.models.TemperatureHandler
 import com.example.myapplication.models.User
 import com.google.firebase.auth.FirebaseAuth
@@ -34,6 +35,9 @@ class LoginActivity : AppCompatActivity() {
         User("undefined", 0)
 
         auth = Firebase.auth
+
+        println("zz" + NetworkHandler.getType(this))
+
 
         temperatureHandler.getTemperature { temperature ->
             User.temperature = temperature
