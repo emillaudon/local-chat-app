@@ -1,8 +1,10 @@
 package com.example.myapplication.activities
 
-import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.util.LruCache
 import android.view.View
 import android.view.animation.AlphaAnimation
 import android.widget.Button
@@ -10,6 +12,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.myapplication.R
+import com.example.myapplication.models.IconHandler
 import com.example.myapplication.models.NetworkHandler
 import com.example.myapplication.models.TemperatureHandler
 import com.example.myapplication.models.User
@@ -18,6 +21,8 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_login.*
+import java.lang.Exception
+import java.net.URL
 
 
 class LoginActivity : AppCompatActivity() {
@@ -27,6 +32,8 @@ class LoginActivity : AppCompatActivity() {
 
     private val temperatureHandler =
         TemperatureHandler(this)
+
+    private lateinit var memoryCache: LruCache<String, Bitmap>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,6 +52,12 @@ class LoginActivity : AppCompatActivity() {
 //            TODO: show only cached post in MainActivity
             startActivity(Intent(this, MainActivity::class.java))
         }
+
+        IconHandler()
+        IconHandler.save()
+
+
+
 
         temperatureHandler.getTemperature { temperature ->
             if (auth.currentUser != null) {
