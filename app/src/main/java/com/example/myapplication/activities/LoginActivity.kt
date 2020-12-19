@@ -28,7 +28,6 @@ import java.net.URL
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
-    private lateinit var db: FirebaseFirestore
 
     private val temperatureHandler =
         TemperatureHandler(this)
@@ -53,12 +52,6 @@ class LoginActivity : AppCompatActivity() {
             startActivity(Intent(this, MainActivity::class.java))
         }
 
-        IconHandler()
-        IconHandler.save()
-
-
-
-
         temperatureHandler.getTemperature { temperature ->
             if (auth.currentUser != null) {
 //                Get cached user object update user temp
@@ -71,7 +64,9 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
-        db = FirebaseFirestore.getInstance()
+//        TODO: Check if already cached
+//        IconHandler.createCache()
+//        IconHandler.cacheIconsFromDb()
 
         val userNameTextField = findViewById<EditText>(R.id.userNameTextField)
         val loginBtn = findViewById<Button>(R.id.loginBtn)

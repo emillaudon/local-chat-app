@@ -97,6 +97,8 @@ class TemperatureHandler(private val activity: Activity) {
 
                     val temperature = i[0] as Double
 
+                    println("aaaaa" + temperature)
+
                     callback(temperature.toInt())
                 }
                 catch (e:Exception) {
