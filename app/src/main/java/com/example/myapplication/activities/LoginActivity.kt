@@ -52,6 +52,8 @@ class LoginActivity : AppCompatActivity() {
             startActivity(Intent(this, MainActivity::class.java))
         }
 
+        IconHandler.createCache()
+
         temperatureHandler.getTemperature { temperature ->
             if (auth.currentUser != null) {
 //                Get cached user object update user temp
@@ -60,15 +62,10 @@ class LoginActivity : AppCompatActivity() {
                 User.temperature = temperature
 
 //               User logged in redirect to main activity
-                startActivity(Intent(this, MainActivity::class.java))
+                checkIconsCacheThenRedirect()
             }
         }
-g
-        IconHandler.createCache()
 
-        if (!IconHandler.isCached()) {
-            IconHandler.cacheIconsFromDb()
-        }
 
         val userNameTextField = findViewById<EditText>(R.id.userNameTextField)
         val loginBtn = findViewById<Button>(R.id.loginBtn)
@@ -85,7 +82,7 @@ g
 
                     User.cache(this)
                     User.saveToDb {
-                        startActivity(Intent(this, MainActivity::class.java))
+                        checkIconsCacheThenRedirect()
                     }
                 }
                 else {
@@ -117,6 +114,18 @@ g
         }
     }
 
+
+//    TODO: do better :(
+    fun checkIconsCacheThenRedirect() {
+        if (!IconHandler.isCached()) {
+            IconHandler.cacheIconsFromDb() {
+                startActivity(Intent(this, MainActivity::class.java))
+            }
+        }
+        else {
+            startActivity(Intent(this, MainActivity::class.java))
+        }
+    }
 
 
 }

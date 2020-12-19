@@ -28,7 +28,7 @@ object IconHandler {
         }
     }
 
-    fun cacheIconsFromDb() {
+    fun cacheIconsFromDb(callback: () -> Unit) {
 
         if (!this::memoryCache.isInitialized) {
             return
@@ -38,33 +38,39 @@ object IconHandler {
 
         db.collection("icons").get().addOnSuccessListener { snapshot ->
 
-            if (snapshot.isEmpty) {
+            if (snapshot.isEmpty || snapshot.count() != 2) {
                 return@addOnSuccessListener
             }
 
-            for (doc in snapshot) {
+            val docs = snapshot.documents
 
-                println(doc.data.toString())
+            val thread = Thread(Runnable {
 
-                val thread = Thread(Runnable {
+                val iconUrl = URL(docs[0].data!!["url"].toString())
+                val iconName = docs[0].toString()
 
-                    val iconUrl = URL(doc.data["url"].toString())
-                    val iconName = doc.id
+                val imgStream = iconUrl.openStream()
+                val image = BitmapFactory.decodeStream(imgStream)
 
-                    val imgStream = iconUrl.openStream()
-                    val image = BitmapFactory.decodeStream(imgStream)
+                println("xyz" + image + iconName)
 
-                    println("xyz" + image + iconName)
+                memoryCache.put(iconName, image)
 
-                    memoryCache.put(iconName, image)
 
-//                    when(iconName) {
-//                        "sun"   -> memoryCache.put("sun_icon", image)
-//                        "snow"  -> memoryCache.put("snow_icon", image)
-//                    }
-                })
-                thread.start()
-            }
+                val iconUrl2 = URL(docs[1].data!!["url"].toString())
+                val iconName2 = docs[1].toString()
+
+                val imgStream2 = iconUrl2.openStream()
+                val image2 = BitmapFactory.decodeStream(imgStream2)
+
+                println("xyz" + image2 + iconName2)
+
+                memoryCache.put(iconName2, image2)
+
+                callback()
+            })
+            thread.start()
+
 
         }
 

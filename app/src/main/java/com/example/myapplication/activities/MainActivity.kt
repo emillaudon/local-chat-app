@@ -53,10 +53,7 @@ class MainActivity : AppCompatActivity() {
         fab.setOnClickListener {
             fabClicked()
         }
-
-
-
-
+        
     }
 
     private fun fabClicked() {
