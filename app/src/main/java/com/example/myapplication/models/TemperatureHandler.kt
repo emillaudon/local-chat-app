@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Build
 import android.os.Looper
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.*
@@ -80,13 +81,13 @@ class TemperatureHandler(private val activity: Activity) {
             println("location:" + location)
 
             val thread = Thread(Runnable {
-
                 try {
-//                    val long = location.longitude.toString().take(9)
-//                    val lat = location.latitude.toString().take(9)
 
-                    val long = 18.063240.toString()
-                    val lat = 59.334591.toString()
+                    val long = location.longitude.toString().take(9)
+                    val lat = location.latitude.toString().take(9)
+
+//                    val long = 18.063240.toString()
+//                    val lat = 59.334591.toString()
 
 
                     val apiUrl = URL("https://opendata-download-metfcst.smhi.se/api/category/pmp3g/version/2/geotype/point/lon/" +
@@ -116,13 +117,14 @@ class TemperatureHandler(private val activity: Activity) {
 
                     val temperature = i[0] as Double
 
-                    println("aaaaa" + temperature)
+                    println("temperature" + apiUrl)
+                    println("temperature" + temperature)
 
                     callback(temperature.toInt())
                 }
                 catch (e:Exception) {
 //                TODO: handle error
-                    println(e)
+                    println("Temperature error: " + e)
                 }
             })
             thread.start()

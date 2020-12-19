@@ -5,15 +5,18 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
 import com.example.myapplication.models.IconHandler
+import com.example.myapplication.models.EncryptionHandler
 import com.example.myapplication.models.Post
 
 
@@ -57,11 +60,17 @@ class PostAdapter(
             .inflate(R.layout.list_item, parent, false)
         return ViewHolder(v)
     }
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val post : Post? = listItems?.get(position)
         if (post != null) {
-            holder.textViewText.text = post.getText()
-            holder.textViewHeader.text = post.getUserName()
+            holder.textViewText.text = post.getText().toString()
+            if (post.getUserName() != null) {
+                holder.textViewHeader.text = EncryptionHandler.decrypt(post.getUserName()!!)
+            }
+            else {
+                holder.textViewHeader.text = post.getUserName()
+            }
             holder.degreesViewText.text = post.getTemperature().toString() + "°C"
 
 
