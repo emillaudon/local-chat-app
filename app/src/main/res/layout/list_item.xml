@@ -34,9 +34,7 @@
                 <ImageView
                     android:id="@+id/postIconImageView"
                     android:layout_width="75dp"
-                    android:layout_height="75dp"
-                    app:srcCompat="@drawable/ic_launcher_background"
-                    tools:srcCompat="@tools:sample/avatars" />
+                    android:layout_height="75dp" />
 
                 <TextView
                     android:id="@+id/degrees"

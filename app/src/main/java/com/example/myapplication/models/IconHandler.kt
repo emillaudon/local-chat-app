@@ -47,7 +47,7 @@ object IconHandler {
             val thread = Thread(Runnable {
 
                 val iconUrl = URL(docs[0].data!!["url"].toString())
-                val iconName = docs[0].toString()
+                val iconName = docs[0].id
 
                 val imgStream = iconUrl.openStream()
                 val image = BitmapFactory.decodeStream(imgStream)
@@ -58,7 +58,7 @@ object IconHandler {
 
 
                 val iconUrl2 = URL(docs[1].data!!["url"].toString())
-                val iconName2 = docs[1].toString()
+                val iconName2 = docs[1].id
 
                 val imgStream2 = iconUrl2.openStream()
                 val image2 = BitmapFactory.decodeStream(imgStream2)
@@ -88,11 +88,13 @@ object IconHandler {
         var bitmap: Bitmap? = null
 
         when(icon) {
-            "snow"  -> bitmap = memoryCache.get("snow_icon")
-            "sun"   -> bitmap = memoryCache.get("sun_icon")
+            "snow"  -> bitmap = memoryCache.get("snow")
+            "sun"   -> bitmap = memoryCache.get("sun")
         }
 
 //        println("xyz get: " + bitmap.toString())
+
+
 
         return bitmap
     }
