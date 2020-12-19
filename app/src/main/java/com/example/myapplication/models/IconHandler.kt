@@ -15,8 +15,8 @@ object IconHandler {
     fun createCache() {
         val maxMemory = (Runtime.getRuntime().maxMemory() / 1024).toInt()
 
-        // Use 1/8th of the available memory for this memory cache.
-        val cacheSize = maxMemory / 8
+        // Use 1/16th of the available memory for this memory cache.
+        val cacheSize = maxMemory / 16
 
         memoryCache = object : LruCache<String, Bitmap>(cacheSize) {
 
@@ -70,8 +70,6 @@ object IconHandler {
                 callback()
             })
             thread.start()
-
-
         }
 
     }
