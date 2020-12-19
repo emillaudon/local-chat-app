@@ -2,13 +2,16 @@ package com.example.myapplication.adapters
 
 
 import android.content.Context
+import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
+import com.example.myapplication.models.IconHandler
 import com.example.myapplication.models.Post
 
 
@@ -35,12 +38,14 @@ class PostAdapter(
         var textViewText: TextView
         var degreesViewText: TextView
         var relativeLayout: RelativeLayout
+        var postIcon: ImageView
 
         init {
             textViewHeader = itemView.findViewById(R.id.textone)
             textViewText = itemView.findViewById(R.id.texttwo)
             degreesViewText = itemView.findViewById(R.id.degrees)
             relativeLayout = itemView.findViewById(R.id.itemRelativeLayout)
+            postIcon = itemView.findViewById(R.id.postIconImageView)
         }
     }
 
@@ -56,6 +61,10 @@ class PostAdapter(
             holder.textViewText.text = post.getText()
             holder.textViewHeader.text = post.getUserName()
             holder.degreesViewText.text = post.getTemperature().toString() + "°C"
+
+            println("zzz" + IconHandler.get("sun").toString())
+
+            holder.postIcon.setImageBitmap(IconHandler.get("sun"))
 
             if (position % 2 == 0) {
                 holder.relativeLayout.setBackgroundResource(R.color.colorAccent)

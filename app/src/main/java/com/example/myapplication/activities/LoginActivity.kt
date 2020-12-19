@@ -63,10 +63,12 @@ class LoginActivity : AppCompatActivity() {
                 startActivity(Intent(this, MainActivity::class.java))
             }
         }
+g
+        IconHandler.createCache()
 
-//        TODO: Check if already cached
-//        IconHandler.createCache()
-//        IconHandler.cacheIconsFromDb()
+        if (!IconHandler.isCached()) {
+            IconHandler.cacheIconsFromDb()
+        }
 
         val userNameTextField = findViewById<EditText>(R.id.userNameTextField)
         val loginBtn = findViewById<Button>(R.id.loginBtn)

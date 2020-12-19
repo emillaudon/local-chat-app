@@ -12,11 +12,6 @@ object IconHandler {
     private lateinit var db: FirebaseFirestore
     private lateinit var memoryCache: LruCache<String, Bitmap>
 
-    var icons = HashMap<String, Bitmap>()
-
-//    var icons = Int[]
-
-
     fun createCache() {
         val maxMemory = (Runtime.getRuntime().maxMemory() / 1024).toInt()
 
@@ -61,49 +56,28 @@ object IconHandler {
 
                     println("xyz" + image + iconName)
 
-                    when(iconName) {
-                        "sun"   -> memoryCache.put("sun_icon", image)
-                        "snow"  -> memoryCache.put("snow_icon", image)
-                    }
+                    memoryCache.put(iconName, image)
+
+//                    when(iconName) {
+//                        "sun"   -> memoryCache.put("sun_icon", image)
+//                        "snow"  -> memoryCache.put("snow_icon", image)
+//                    }
                 })
                 thread.start()
-
             }
 
         }
 
     }
 
-
-    fun save() {
-
-        val imgUrlString = "https://firebasestorage.googleapis.com/v0/b/localchatapp-12747.appspot.com/o/snow_icon.png?alt=media&token=ab1231cf-877c-45cf-8fab-619500845e41"
-        val imgUrl = URL(imgUrlString)
-
-        val thread = Thread(Runnable {
-            try {
-                val imgStream = imgUrl.openStream()
-                val image = BitmapFactory.decodeStream(imgStream)
-
-                println("xyz1: " + image.toString())
-
-                memoryCache.put("snow_icon", image)
-
-
-
-            }
-            catch (e: Exception) {
-
-            }
-        })
-        thread.start()
-    }
 
     fun get(icon: String): Bitmap?  {
 
         if (!this::memoryCache.isInitialized) {
             return null
         }
+
+        println("xyz get: " + memoryCache.snapshot().values)
 
         var bitmap: Bitmap? = null
 
@@ -112,15 +86,18 @@ object IconHandler {
             "sun"   -> bitmap = memoryCache.get("sun_icon")
         }
 
-        println("xyz get: " + memoryCache.snapshot().values)
-        println("xyz get: " + bitmap.toString())
+//        println("xyz get: " + bitmap.toString())
 
         return bitmap
     }
 
+
+
     fun isCached(): Boolean {
 
-        return false
+        if (memoryCache.snapshot().values.count() == 0) return false
+
+        return true
     }
 
 

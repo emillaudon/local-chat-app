@@ -55,9 +55,6 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-//        IconHandler.get("snow")
-
-
 
 
     }
