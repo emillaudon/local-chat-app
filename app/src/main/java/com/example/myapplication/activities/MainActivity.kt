@@ -14,6 +14,7 @@ import com.example.myapplication.adapters.PostAdapter
 import com.example.myapplication.data.DBPost
 import com.example.myapplication.data.PostDatabase
 import com.example.myapplication.data.PostRepository
+import com.example.myapplication.models.EncryptionHandler
 import com.example.myapplication.models.PostCacheHandler
 import com.example.myapplication.models.PostsHandler
 import com.example.myapplication.models.User
@@ -56,6 +57,18 @@ class MainActivity : AppCompatActivity() {
         fab.setOnClickListener {
             fabClicked()
         }
+
+        EncryptionHandler.generateKey()
+
+        val x = EncryptionHandler.encrypt("hej")
+
+        println("enc:" + x)
+
+        val y = EncryptionHandler.decrypt(x)
+
+        println("enc: dec " + y)
+
+
 
     }
 

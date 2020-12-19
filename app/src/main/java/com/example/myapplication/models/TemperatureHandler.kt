@@ -85,6 +85,9 @@ class TemperatureHandler(private val activity: Activity) {
                     val long = location.longitude.toString().take(9)
                     val lat = location.latitude.toString().take(9)
 
+//                    val long = 18.063240.toString()
+//                    val lat = 59.334591.toString()
+
 
                     val apiUrl = URL("https://opendata-download-metfcst.smhi.se/api/category/pmp3g/version/2/geotype/point/lon/" +
                             long + "/lat/" + lat + "/data.json")
