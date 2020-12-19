@@ -49,4 +49,14 @@ class PostCacheHandler(application: Application, ctx: Context) {
             scope.cancel()
         }
     }
+
+    public fun clearPostCacheAndAddNewPosts(posts: List<Post>) {
+        val scope = CoroutineScope(newSingleThreadContext("name"))
+
+        scope.launch(Dispatchers.IO) {
+            postDao.nukeTable()
+            repository.addPosts(posts)
+            scope.cancel()
+        }
+    }
 }

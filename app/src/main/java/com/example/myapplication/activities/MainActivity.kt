@@ -27,6 +27,8 @@ import java.util.*
 import javax.crypto.Cipher
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
+import java.sql.Date
+import java.sql.Time
 import kotlin.coroutines.CoroutineContext
 
 
@@ -45,7 +47,7 @@ class MainActivity : AppCompatActivity() {
 
         title = EncryptionHandler.decrypt(User.name) + "     " + User.temperature + "°C"
 
-        postsHandler = PostsHandler()
+        postsHandler = PostsHandler(application, this)
         postsHandler.getPosts() {
             adapter.notifyDataSetChanged()
         }
