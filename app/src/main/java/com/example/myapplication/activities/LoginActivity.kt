@@ -46,6 +46,7 @@ class LoginActivity : AppCompatActivity() {
             startActivity(Intent(this, MainActivity::class.java))
         }
 
+
         temperatureHandler.getTemperature { temperature ->
             if (auth.currentUser != null) {
 //                Get cached user object update user temp

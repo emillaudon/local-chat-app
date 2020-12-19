@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Build
 import android.os.Looper
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.*
@@ -80,10 +81,14 @@ class TemperatureHandler(private val activity: Activity) {
             println("location:" + location)
 
             val thread = Thread(Runnable {
-
                 try {
-                    val long = location.longitude.toString().take(9)
-                    val lat = location.latitude.toString().take(9)
+//                    val long = location.longitude.toString().take(9)
+//                    val lat = location.latitude.toString().take(9)
+
+                    val long = 18.063240.toString()
+                    val lat = 59.334591.toString()
+
+
                     val apiUrl = URL("https://opendata-download-metfcst.smhi.se/api/category/pmp3g/version/2/geotype/point/lon/" +
                             long + "/lat/" + lat + "/data.json")
 
@@ -91,17 +96,34 @@ class TemperatureHandler(private val activity: Activity) {
                     val jsonObject = JSONObject(apiUrl.readText())
                     val dataItem = jsonObject["timeSeries"] as JSONArray
                     val jsonIterationObj1 = dataItem[1] as JSONObject
-                    val jsonIterationObj2 = jsonIterationObj1["parameters"] as JSONArray
-                    val result = jsonIterationObj2[1] as JSONObject
+                    val parameters = jsonIterationObj1["parameters"] as JSONArray
+
+                    var celKey = 0
+
+                    for (i in 0..parameters.length() - 1) {
+
+                        println("zzzz" + parameters[i])
+                        val item = parameters[i] as JSONObject
+
+                        if (item["unit"] == "Cel") {
+                            celKey = i
+                            break
+                        }
+                    }
+
+                    val result = parameters[celKey] as JSONObject
                     val i = result["values"] as JSONArray
 
                     val temperature = i[0] as Double
+
+                    println("temperature" + apiUrl)
+                    println("temperature" + temperature)
 
                     callback(temperature.toInt())
                 }
                 catch (e:Exception) {
 //                TODO: handle error
-                    println(e)
+                    println("Temperature error: " + e)
                 }
             })
             thread.start()
