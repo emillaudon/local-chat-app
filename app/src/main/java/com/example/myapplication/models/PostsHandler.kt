@@ -1,41 +1,69 @@
 package com.example.myapplication.models
 
+import android.app.Application
+import android.content.Context
 import com.google.firebase.firestore.FirebaseFirestore
+import java.sql.Timestamp
 
-class PostsHandler() {
+class PostsHandler(application: Application, context: Context) {
+    private var context = context
+    private var application = application
     private var user = User
 
     public var posts: ArrayList<Post> = arrayListOf()
 
     fun getPosts(callback: () -> Unit) {
-        val db = FirebaseFirestore.getInstance()
-        db.collection("posts")
-            .whereGreaterThanOrEqualTo("temperature", User.temperature - 1)
-            .whereLessThanOrEqualTo("temperature", User.temperature + 1)
-            .addSnapshotListener { value, e  ->
+        val cacheHandler = PostCacheHandler(application, context)
 
-                if (e != null) {
-                    println( "Listen failed." + e)
+        if(NetworkHandler.isOnline(context)) {
+
+            val db = FirebaseFirestore.getInstance()
+            db.collection("posts")
+                .whereGreaterThanOrEqualTo("temperature", User.temperature - 1)
+                .whereLessThanOrEqualTo("temperature", User.temperature + 1)
+                .addSnapshotListener { value, e ->
+
+                    if (e != null) {
+                        println("Listen failed." + e)
+                        callback()
+                        return@addSnapshotListener
+                    }
+
+                    posts.clear()
+                    for (document in value!!) {
+                        posts.add(
+                            Post.Builder()
+                                .text(document.data["text"] as String)
+                                .userName(document.data["userName"] as String)
+                                .date(document.data["date"] as Long)
+                                .temperature(document.data["temperature"].toString().toInt())
+                                .build()
+                        )
+                    }
+                    posts.sortBy { it.getDate() }
+                    posts.reverse()
+
+                    cacheHandler.clearPostCacheAndAddNewPosts(posts)
+
                     callback()
-                    return@addSnapshotListener
                 }
-
-                posts.clear()
-                for (document in value!!) {
-
+        } else {
+            cacheHandler.getCachedPosts {cachedPosts ->
+                cachedPosts.forEach {dbPost ->
                     posts.add(
                         Post.Builder()
-                        .text(document.data["text"] as String)
-                        .userName(document.data["userName"] as String)
-                        .date(document.data["date"] as com.google.firebase.Timestamp)
-                        .temperature(document.data["temperature"].toString().toInt())
-                        .build()
+                            .text(dbPost.text)
+                            .userName(dbPost.userName)
+                            .date(dbPost.date)
+                            .temperature(dbPost.temperature)
+                            .build()
                     )
                 }
                 posts.sortBy { it.getDate() }
                 posts.reverse()
                 callback()
             }
+        }
     }
 
     fun newPost(text: String, callback: () -> Unit) {
@@ -43,7 +71,7 @@ class PostsHandler() {
         val post = Post.Builder()
             .text(text)
             .userName(user.name)
-            .date(com.google.firebase.Timestamp.now())
+            .date(System.currentTimeMillis())
             .temperature(User.temperature)
             .build()
 

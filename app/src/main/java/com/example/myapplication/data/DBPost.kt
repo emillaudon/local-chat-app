@@ -9,8 +9,8 @@ import java.util.*
 data class DBPost(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
-    var text : String?,
-    val userName : String?,
-    val date : String?,
-    val temperature : Int?
+    var text : String,
+    val userName : String,
+    val date : Long,
+    val temperature : Int
 )

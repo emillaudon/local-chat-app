@@ -22,7 +22,7 @@ class PostRepository(private val postDao: PostDao) {
 
     private fun convertToDbPost(post: com.example.myapplication.models.Post) : DBPost {
         return DBPost(
-            0, post.getText(), post.getUserName(), post.getDate().toString(), post.getTemperature()
+            0, post.getText(), post.getUserName(), post.getDate(), post.getTemperature()
         )
     }
 }
