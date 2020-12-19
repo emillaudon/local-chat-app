@@ -1,15 +1,17 @@
 package com.example.myapplication.activities
 
-import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.animation.AlphaAnimation
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.example.myapplication.R
+import com.example.myapplication.models.EncryptionHandler
 import com.example.myapplication.models.NetworkHandler
 import com.example.myapplication.models.TemperatureHandler
 import com.example.myapplication.models.User
@@ -28,6 +30,7 @@ class LoginActivity : AppCompatActivity() {
     private val temperatureHandler =
         TemperatureHandler(this)
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
@@ -71,7 +74,7 @@ class LoginActivity : AppCompatActivity() {
             auth.signInAnonymously().addOnCompleteListener(this) { task ->
                 if (task.isSuccessful && auth.currentUser?.uid != null) {
 
-                    User.name = userNameTextField.text.toString()
+                    User.name = EncryptionHandler.encrypt(userNameTextField.text.toString())
                     User.uid = auth.currentUser!!.uid
 
                     User.cache(this)

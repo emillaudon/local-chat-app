@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        title = User.name + "     " + User.temperature + "°C"
+        title = EncryptionHandler.decrypt(User.name) + "     " + User.temperature + "°C"
 
         postsHandler = PostsHandler()
         postsHandler.getPosts() {
