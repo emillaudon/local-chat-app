@@ -5,7 +5,7 @@ import com.google.firebase.Timestamp
 class Post private constructor(builder: Builder) {
     private var text : String?
     private var userName : String?
-    private var date : Timestamp?
+    private var date : Long?
     private var temperature : Int?
 
     init {
@@ -20,12 +20,12 @@ class Post private constructor(builder: Builder) {
             private set
         var userName: String? = null
             private set
-        var date: Timestamp? = null
+        var date: Long? = null
         var temperature: Int? = null
 
         fun text(text: String) = apply { this.text = text }
         fun userName(userName: String) = apply { this.userName = userName }
-        fun date(date: Timestamp) = apply { this.date = date }
+        fun date(date: Long) = apply { this.date = date }
         fun temperature(temperature: Int) = apply { this.temperature = temperature }
         fun build() = Post(this)
     }
@@ -39,7 +39,7 @@ class Post private constructor(builder: Builder) {
         return userName
     }
 
-    fun getDate(): Timestamp? {
+    fun getDate(): Long? {
         return date
     }
 

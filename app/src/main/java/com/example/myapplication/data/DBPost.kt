@@ -11,6 +11,6 @@ data class DBPost(
     val id: Int,
     var text : String?,
     val userName : String?,
-    val date : String?,
+    val date : Long?,
     val temperature : Int?
 )

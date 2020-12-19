@@ -1,6 +1,7 @@
 package com.example.myapplication.models
 
 import com.google.firebase.firestore.FirebaseFirestore
+import java.sql.Timestamp
 
 class PostsHandler() {
     private var user = User
@@ -27,7 +28,7 @@ class PostsHandler() {
                         Post.Builder()
                         .text(document.data["text"] as String)
                         .userName(document.data["userName"] as String)
-                        .date(document.data["date"] as com.google.firebase.Timestamp)
+                        .date(document.data["date"] as Long)
                         .temperature(document.data["temperature"].toString().toInt())
                         .build()
                     )
@@ -43,7 +44,7 @@ class PostsHandler() {
         val post = Post.Builder()
             .text(text)
             .userName(user.name)
-            .date(com.google.firebase.Timestamp.now())
+            .date(System.currentTimeMillis())
             .temperature(User.temperature)
             .build()
 
