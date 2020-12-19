@@ -1,8 +1,9 @@
 package com.example.myapplication.models
 
-import java.security.NoSuchAlgorithmException
+import android.os.Build
+import androidx.annotation.RequiresApi
+import java.util.*
 import javax.crypto.Cipher
-import javax.crypto.SecretKey
 import javax.crypto.spec.SecretKeySpec
 
 class EncryptionHandler {
@@ -10,44 +11,33 @@ class EncryptionHandler {
     companion object {
 
         private val ALGORITHM = "AES"
-        private var key: SecretKey? = null
 
-        private var salt = "A8768CC5BEAA6093"
+        @RequiresApi(Build.VERSION_CODES.O)
+        fun encrypt(input: String, password: String = User.secretKey): String {
 
-        fun generateKey() {
-            key = getKey()
+            val cipher = Cipher.getInstance(ALGORITHM)
+            val keySpec = SecretKeySpec(password.toByteArray(), ALGORITHM)
+
+            cipher.init(Cipher.ENCRYPT_MODE, keySpec)
+
+            val encrypt = cipher.doFinal(input.toByteArray());
+
+            return Base64.getEncoder().encodeToString(encrypt)
         }
 
-        fun encrypt(string: String): ByteArray {
+        @RequiresApi(Build.VERSION_CODES.O)
+        fun decrypt(input: String, password: String = User.secretKey): String {
 
-            val aes = Cipher.getInstance(ALGORITHM)
-            aes.init(Cipher.ENCRYPT_MODE, key)
+            val cipher = Cipher.getInstance(ALGORITHM)
+            val keySpec = SecretKeySpec(password.toByteArray(),ALGORITHM)
 
-            val l = aes.doFinal(string.toByteArray())
+            cipher.init(Cipher.DECRYPT_MODE, keySpec)
 
-            return l
+            val decrypt = cipher.doFinal(Base64.getDecoder().decode(input))
+
+            return String(decrypt)
         }
 
-        fun decrypt(item: ByteArray): String {
-
-            val aes = Cipher.getInstance(ALGORITHM)
-            aes.init(Cipher.DECRYPT_MODE, key)
-            val decrypted = aes.doFinal(item)
-
-            return decrypted.toString()
-        }
-
-        private fun getKey(): SecretKey? {
-            var secretKey: SecretKey? = null
-
-            try {
-                secretKey = SecretKeySpec(salt.toByteArray(), ALGORITHM)
-            } catch (e: NoSuchAlgorithmException) {
-                e.printStackTrace()
-            }
-            println("key" + secretKey)
-            return secretKey
-        }
     }
 
 }

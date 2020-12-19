@@ -3,7 +3,9 @@ package com.example.myapplication.activities
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
@@ -21,6 +23,10 @@ import com.example.myapplication.models.User
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.Timestamp
 import kotlinx.coroutines.*
+import java.util.*
+import javax.crypto.Cipher
+import javax.crypto.spec.IvParameterSpec
+import javax.crypto.spec.SecretKeySpec
 import kotlin.coroutines.CoroutineContext
 
 
@@ -32,6 +38,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var postsHandler : PostsHandler
     
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -58,14 +65,12 @@ class MainActivity : AppCompatActivity() {
             fabClicked()
         }
 
-        EncryptionHandler.generateKey()
 
         val x = EncryptionHandler.encrypt("hej")
 
         println("enc:" + x)
 
         val y = EncryptionHandler.decrypt(x)
-
         println("enc: dec " + y)
 
 
