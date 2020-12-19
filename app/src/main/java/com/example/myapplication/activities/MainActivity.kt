@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
 
         title = User.name + "     " + User.temperature + "°C"
 
-        postsHandler = PostsHandler()
+        postsHandler = PostsHandler(application, this)
         postsHandler.getPosts() {
             adapter.notifyDataSetChanged()
         }

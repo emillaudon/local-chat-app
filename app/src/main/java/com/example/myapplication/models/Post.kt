@@ -31,19 +31,19 @@ class Post private constructor(builder: Builder) {
     }
 
 
-    fun getText(): String? {
-        return text
+    fun getText(): String {
+        return text as String
     }
 
-    fun getUserName(): String? {
-        return userName
+    fun getUserName(): String {
+        return userName as String
     }
 
-    fun getDate(): Long? {
-        return date
+    fun getDate(): Long {
+        return date as Long
     }
 
-    fun getTemperature() : Int? {
-        return temperature
+    fun getTemperature() : Int {
+        return temperature as Int
     }
 }
