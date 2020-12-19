@@ -1,8 +1,11 @@
 package com.example.myapplication.activities
 
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
+import android.util.LruCache
 import android.view.View
 import android.view.animation.AlphaAnimation
 import android.widget.Button
@@ -11,6 +14,7 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.example.myapplication.R
+import com.example.myapplication.models.IconHandler
 import com.example.myapplication.models.EncryptionHandler
 import com.example.myapplication.models.NetworkHandler
 import com.example.myapplication.models.TemperatureHandler
@@ -20,15 +24,18 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_login.*
+import java.lang.Exception
+import java.net.URL
 
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
-    private lateinit var db: FirebaseFirestore
 
     private val temperatureHandler =
         TemperatureHandler(this)
+
+    private lateinit var memoryCache: LruCache<String, Bitmap>
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,6 +56,7 @@ class LoginActivity : AppCompatActivity() {
             startActivity(Intent(this, MainActivity::class.java))
         }
 
+        IconHandler.createCache()
 
         temperatureHandler.getTemperature { temperature ->
             if (auth.currentUser != null) {
@@ -58,11 +66,10 @@ class LoginActivity : AppCompatActivity() {
                 User.temperature = temperature
 
 //               User logged in redirect to main activity
-                startActivity(Intent(this, MainActivity::class.java))
+                checkIconsCacheThenRedirect()
             }
         }
 
-        db = FirebaseFirestore.getInstance()
 
         val userNameTextField = findViewById<EditText>(R.id.userNameTextField)
         val loginBtn = findViewById<Button>(R.id.loginBtn)
@@ -79,7 +86,7 @@ class LoginActivity : AppCompatActivity() {
 
                     User.cache(this)
                     User.saveToDb {
-                        startActivity(Intent(this, MainActivity::class.java))
+                        checkIconsCacheThenRedirect()
                     }
                 }
                 else {
@@ -111,6 +118,18 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+
+//    TODO: do better :(
+    fun checkIconsCacheThenRedirect() {
+        if (!IconHandler.isCached()) {
+            IconHandler.cacheIconsFromDb() {
+                startActivity(Intent(this, MainActivity::class.java))
+            }
+        }
+        else {
+            startActivity(Intent(this, MainActivity::class.java))
+        }
+    }
 
 
 }

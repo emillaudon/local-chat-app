@@ -3,16 +3,19 @@ package com.example.myapplication.activities
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.os.Build
 import android.os.Bundle
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myapplication.*
+import com.example.myapplication.R
 import com.example.myapplication.adapters.PostAdapter
+import com.example.myapplication.models.IconHandler
+import com.example.myapplication.models.PostsHandler
+import com.example.myapplication.models.User
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.example.myapplication.data.DBPost
 import com.example.myapplication.data.PostDatabase
 import com.example.myapplication.data.PostRepository
@@ -74,8 +77,6 @@ class MainActivity : AppCompatActivity() {
 
         val y = EncryptionHandler.decrypt(x)
         println("enc: dec " + y)
-
-
 
     }
 

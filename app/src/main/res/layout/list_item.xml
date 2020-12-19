@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/itemRelativeLayout"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
@@ -17,35 +19,48 @@
             android:padding="16dp">
 
             <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                >
-                <TextView
-                android:id="@+id/textone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Text One"
-                android:textStyle="bold"
-                android:textSize="16dp"
-                />
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/textone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="15dp"
+                        android:text="Text One"
+                        android:textSize="16dp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/texttwo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Text Two" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/postIconImageView"
+                    android:layout_width="40dp"
+                    android:layout_height="fill_parent"
+                    android:layout_marginLeft="150dp" />
 
                 <TextView
                     android:id="@+id/degrees"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
                     android:text="Text One"
                     android:textAlignment="textEnd"
                     android:textSize="16dp"
                     android:textStyle="bold" />
 
             </LinearLayout>
-
-            <TextView
-                android:id="@+id/texttwo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Text Two" />
 
 
         </androidx.appcompat.widget.LinearLayoutCompat>

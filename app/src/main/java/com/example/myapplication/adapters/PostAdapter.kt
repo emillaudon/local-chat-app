@@ -2,15 +2,20 @@ package com.example.myapplication.adapters
 
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
+import com.example.myapplication.models.IconHandler
 import com.example.myapplication.models.EncryptionHandler
 import com.example.myapplication.models.Post
 
@@ -38,12 +43,14 @@ class PostAdapter(
         var textViewText: TextView
         var degreesViewText: TextView
         var relativeLayout: RelativeLayout
+        var postIcon: ImageView
 
         init {
             textViewHeader = itemView.findViewById(R.id.textone)
             textViewText = itemView.findViewById(R.id.texttwo)
             degreesViewText = itemView.findViewById(R.id.degrees)
             relativeLayout = itemView.findViewById(R.id.itemRelativeLayout)
+            postIcon = itemView.findViewById(R.id.postIconImageView)
         }
     }
 
@@ -65,6 +72,23 @@ class PostAdapter(
                 holder.textViewHeader.text = post.getUserName()
             }
             holder.degreesViewText.text = post.getTemperature().toString() + "°C"
+
+
+
+            println("abc" + IconHandler.get("sun").toString())
+
+            val icon: Bitmap
+
+            if (post.getTemperature()!! >= 20 && IconHandler.isCached()) {
+                icon = IconHandler.get("sun")!!
+            }
+            else {
+                icon = IconHandler.get("snow")!!
+            }
+
+            holder.postIcon.setImageBitmap(icon)
+//            holder.postIcon.setBackgroundColor(Color.BLUE)
+
 
             if (position % 2 == 0) {
                 holder.relativeLayout.setBackgroundResource(R.color.colorAccent)

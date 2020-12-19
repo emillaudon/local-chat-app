@@ -82,6 +82,7 @@ class TemperatureHandler(private val activity: Activity) {
 
             val thread = Thread(Runnable {
                 try {
+
                     val long = location.longitude.toString().take(9)
                     val lat = location.latitude.toString().take(9)
 
