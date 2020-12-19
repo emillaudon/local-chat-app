@@ -1,9 +1,7 @@
 package com.example.myapplication.activities
 
 
-import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
 import android.os.Build
 import android.os.Bundle
 import androidx.annotation.RequiresApi
@@ -12,27 +10,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
 import com.example.myapplication.adapters.PostAdapter
-import com.example.myapplication.models.IconHandler
-import com.example.myapplication.models.PostsHandler
-import com.example.myapplication.models.User
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.example.myapplication.data.DBPost
-import com.example.myapplication.data.PostDatabase
-import com.example.myapplication.data.PostRepository
 import com.example.myapplication.models.EncryptionHandler
-import com.example.myapplication.models.PostCacheHandler
 import com.example.myapplication.models.PostsHandler
 import com.example.myapplication.models.User
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.firebase.Timestamp
-import kotlinx.coroutines.*
-import java.util.*
-import javax.crypto.Cipher
-import javax.crypto.spec.IvParameterSpec
-import javax.crypto.spec.SecretKeySpec
-import java.sql.Date
-import java.sql.Time
-import kotlin.coroutines.CoroutineContext
 
 
 class MainActivity : AppCompatActivity() {
