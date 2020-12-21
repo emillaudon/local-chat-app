@@ -40,8 +40,8 @@ class PostsHandler(application: Application, context: Context) {
                                 .build()
                         )
                     }
-                    posts.sortBy { it.getDate() }
-                    posts.reverse()
+
+                    posts = PostSorter.bubbleSort(posts)
 
                     cacheHandler.clearPostCacheAndAddNewPosts(posts)
 
@@ -59,8 +59,8 @@ class PostsHandler(application: Application, context: Context) {
                             .build()
                     )
                 }
-                posts.sortBy { it.getDate() }
-                posts.reverse()
+
+                posts = PostSorter.bubbleSort(posts)
                 callback()
             }
         }
