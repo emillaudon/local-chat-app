@@ -2,6 +2,7 @@ package com.example.myapplication.models
 
 import android.app.Application
 import android.content.Context
+import com.example.myapplication.models.PostSorter.Companion.bubbleSort
 import com.google.firebase.firestore.FirebaseFirestore
 import java.sql.Timestamp
 
@@ -41,7 +42,7 @@ class PostsHandler(application: Application, context: Context) {
                         )
                     }
 
-                    posts = PostSorter.bubbleSort(posts)
+                    posts = posts.bubbleSort()
 
                     cacheHandler.clearPostCacheAndAddNewPosts(posts)
 
@@ -60,7 +61,7 @@ class PostsHandler(application: Application, context: Context) {
                     )
                 }
 
-                posts = PostSorter.bubbleSort(posts)
+                posts = posts.bubbleSort()
                 callback()
             }
         }

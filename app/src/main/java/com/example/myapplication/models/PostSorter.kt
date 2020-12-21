@@ -4,21 +4,21 @@ class PostSorter {
 
     companion object {
 
-        fun bubbleSort(post: ArrayList<Post>) : ArrayList<Post> {
+        fun ArrayList<Post>.bubbleSort() : ArrayList<Post> {
             var swap = true
             while(swap) {
                 swap = false
-                for(i in 0 until post.size-1) {
-                    if(post[i].getDate() < post[i+1].getDate()) {
-                        val temp = post[i]
-                        post[i] = post[i + 1]
-                        post[i + 1] = temp
+                for(i in 0 until this.size-1) {
+                    if(this[i].getDate() < this[i+1].getDate()) {
+                        val temp = this[i]
+                        this[i] = this[i + 1]
+                        this[i + 1] = temp
 
                         swap = true
                     }
                 }
             }
-            return post
+            return this
         }
     }
 }
