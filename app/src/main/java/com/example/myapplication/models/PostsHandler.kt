@@ -93,4 +93,34 @@ class PostsHandler(application: Application, context: Context) {
                 println("Error adding document")
             }
     }
+
+
+    companion object {
+        /*
+            Bubble sort extension on array of post
+            Sorting on post date
+        */
+        fun ArrayList<Post>.bubbleSort(): ArrayList<Post> {
+
+            if (this.count() <= 2) return this
+
+            while (true) {
+
+                var swapped = false
+
+                for (i in 0 until this.count()) {
+                    if (this[i].getDate() < this[i + 1].getDate()) {
+                        val holdingObject = this[i]
+
+                        this[i] = this[i + 1]
+                        this[i + 1] = holdingObject
+
+                        swapped = true
+                    }
+                }
+
+                if (!swapped) return this
+            }
+        }
+    }
 }

@@ -35,8 +35,6 @@ class LoginActivity : AppCompatActivity() {
     private val temperatureHandler =
         TemperatureHandler(this)
 
-    private lateinit var memoryCache: LruCache<String, Bitmap>
-
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -120,7 +118,7 @@ class LoginActivity : AppCompatActivity() {
 
 
 //    TODO: do better :(
-    fun checkIconsCacheThenRedirect() {
+private fun checkIconsCacheThenRedirect() {
         if (!IconHandler.isCached()) {
             IconHandler.cacheIconsFromDb() {
                 startActivity(Intent(this, MainActivity::class.java))
