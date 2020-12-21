@@ -17,7 +17,6 @@ object User {
     var temperature: Int = 0
     var uid: String? = null
 
-    val secretKey = "1234567812345678"
 
     private lateinit var db: FirebaseFirestore
 

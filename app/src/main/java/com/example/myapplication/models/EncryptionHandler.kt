@@ -8,15 +8,17 @@ import javax.crypto.spec.SecretKeySpec
 
 class EncryptionHandler {
 
+
     companion object {
+        val salt = "1234567812345678"
 
         private val ALGORITHM = "AES"
 
         @RequiresApi(Build.VERSION_CODES.O)
-        fun encrypt(input: String, password: String = User.secretKey): String {
+        fun encrypt(input: String): String {
 
             val cipher = Cipher.getInstance(ALGORITHM)
-            val keySpec = SecretKeySpec(password.toByteArray(), ALGORITHM)
+            val keySpec = SecretKeySpec(salt.toByteArray(), ALGORITHM)
 
             cipher.init(Cipher.ENCRYPT_MODE, keySpec)
 
@@ -26,10 +28,10 @@ class EncryptionHandler {
         }
 
         @RequiresApi(Build.VERSION_CODES.O)
-        fun decrypt(input: String, password: String = User.secretKey): String {
+        fun decrypt(input: String): String {
 
             val cipher = Cipher.getInstance(ALGORITHM)
-            val keySpec = SecretKeySpec(password.toByteArray(),ALGORITHM)
+            val keySpec = SecretKeySpec(salt.toByteArray(),ALGORITHM)
 
             cipher.init(Cipher.DECRYPT_MODE, keySpec)
 
