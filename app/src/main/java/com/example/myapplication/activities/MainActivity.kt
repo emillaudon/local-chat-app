@@ -12,7 +12,7 @@ import com.example.myapplication.R
 import com.example.myapplication.adapters.PostAdapter
 import com.example.myapplication.models.EncryptionHandler
 import com.example.myapplication.models.PostsHandler
-import com.example.myapplication.models.PostsHandler.Companion.bubbelSort
+import com.example.myapplication.models.PostsHandler.Companion.bubbleSort
 import com.example.myapplication.models.User
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
             val postsUnsort = postsHandler.posts
             println("sss" + postsUnsort[0].getText())
 
-            val postsSort = postsHandler.posts.bubbelSort()
+            val postsSort = postsHandler.posts.bubbleSort()
             println("sss" + postsSort[0].getText())
         }
 
