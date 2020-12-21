@@ -58,12 +58,18 @@ class LoginActivity : AppCompatActivity() {
 
         IconHandler.createCache()
 
-        temperatureHandler.getTemperature { temperature ->
+        temperatureHandler.getTemperature { temperature, error ->
+            if (error != null && temperature == null) {
+                runOnUiThread {
+                    Toast.makeText(baseContext, "Error getting temperature", Toast.LENGTH_LONG).show()
+                }
+                return@getTemperature
+            }
             if (auth.currentUser != null) {
 //                Get cached user object update user temp
                 User.uid = auth.currentUser!!.uid
                 User.getFromCache(this)
-                User.temperature = temperature
+                User.temperature = temperature!!
 
 //               User logged in redirect to main activity
                 checkIconsCacheThenRedirect()
@@ -113,8 +119,15 @@ class LoginActivity : AppCompatActivity() {
 
     private fun setUserTemperature() {
 
-        temperatureHandler.getTemperature { temperature ->
-            User.temperature = temperature
+        temperatureHandler.getTemperature { temperature, error ->
+            if (error != null && temperature == null) {
+                runOnUiThread {
+                    Toast.makeText(baseContext, "Error getting temperature", Toast.LENGTH_LONG).show()
+                }
+                return@getTemperature
+            }
+
+            User.temperature = temperature!!
         }
     }
 

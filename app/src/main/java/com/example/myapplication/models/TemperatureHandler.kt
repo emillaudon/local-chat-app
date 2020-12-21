@@ -6,7 +6,6 @@ import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Build
 import android.os.Looper
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.*
@@ -70,7 +69,7 @@ class TemperatureHandler(private val activity: Activity) {
         }
     }
 
-    fun getTemperature(callback: (Int) -> Unit) {
+    fun getTemperature(callback: (Int?, Exception?) -> Unit) {
 
         getLocation { location ->
 
@@ -120,11 +119,13 @@ class TemperatureHandler(private val activity: Activity) {
                     println("temperature" + apiUrl)
                     println("temperature" + temperature)
 
-                    callback(temperature.toInt())
+                    callback(temperature.toInt(), null)
                 }
                 catch (e:Exception) {
 //                TODO: handle error
                     println("Temperature error: " + e)
+
+                    callback(null, e)
                 }
             })
             thread.start()
