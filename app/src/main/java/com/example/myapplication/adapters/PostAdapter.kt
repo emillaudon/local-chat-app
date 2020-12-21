@@ -77,17 +77,16 @@ class PostAdapter(
 
             println("abc" + IconHandler.get("sun").toString())
 
-            val icon: Bitmap
+            var icon: Bitmap? = null
 
             if (post.getTemperature()!! >= 20 && IconHandler.isCached()) {
                 icon = IconHandler.get("sun")!!
             }
-            else {
+            else if(IconHandler.isCached()) {
                 icon = IconHandler.get("snow")!!
             }
-
-            holder.postIcon.setImageBitmap(icon)
-//            holder.postIcon.setBackgroundColor(Color.BLUE)
+            if (icon != null)
+                holder.postIcon.setImageBitmap(icon)
 
 
             if (position % 2 == 0) {
